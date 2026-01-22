@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+    --primary: #000000;
+    --primary-text: #ffffff;
+    --secondary: #370a00;
+    --secondary-text: #ffd6a7;
+    --accent: #8c3f27;
+    --accent-text: #ffd6a7;
+    --neutral: #c93400;
+    --neutral-text: #fff7ed;
+    --background: #feecd3;
+    --background-text: #7c2808;
+}
+
+[data-theme="dark"] {
+    --primary: #db924c;
+    --primary-text: #110802;
+    --secondary: #273e3f;
+    --secondary-text: #d0d4d2;
+    --accent: #11576d;
+    --accent-text: #d0dbe0;
+    --neutral: #120c12;
+    --neutral-text: #c9c7c9;
+    --background: #261b25;
+    --background-text: #c09a5f;
+}
+
+@layer components {
+    .button-primary {
+        @apply text-white bg-[var(--primary)] box-border border border-transparent hover:bg-[var(--secondary)] focus:ring-2 focus:ring-[var(--primary)] shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2.5 focus:outline-none;
+    }
+    .button-secondary {
+        @apply text-white bg-[var(--secondary)] box-border border border-transparent hover:bg-[var(--primary)] focus:ring-2 focus:ring-[var(--secondary)] shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2.5 focus:outline-none;
+    }
+
+    .button-accent {
+        @apply text-white bg-[var(--accent)] box-border border border-transparent hover:bg-[var(--secondary)] focus:ring-2 focus:ring-[var(--accent)] shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2.5 focus:outline-none;
+    }
+
+    .button {
+        @apply text-white box-border border border-transparent hover:bg-[var(--secondary)] focus:ring-2 focus:ring-[var(--primary)] shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2.5 focus:outline-none;
+    }
+}
