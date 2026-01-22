@@ -7,7 +7,7 @@ const API = axios.create({
 
 export async function upload(formData){
     const token = localStorage.getItem('token');
-    const response = await API.post('/post/upload', formData, {
+    const response = await API.post('/post/store', formData, {
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data"

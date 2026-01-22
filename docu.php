@@ -21,3 +21,11 @@
 
 // in api always use auth:sanctum as middleware
 
+#Git
+//git init
+//git add .
+//git commit -m "message"
+//git remote add origin URL
+//git git branch -M main
+//git git push -u origin main
+

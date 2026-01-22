@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Services\UploadService;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -26,9 +27,18 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, UploadService $service)
     {
-        $post = Post::create($request->all());
+        $url_data = $service->upload($request);
+        if(isset($url_data['error'])){
+            return response()->json($url_data, 400);
+        }
+        $request->image = $url_data['url'];
+        $post = Post::create([
+            'title'         => $request->title,
+            'descriptions'  => $request->descriptions,
+            'image'         => $request->image,
+        ]);
         return response()->json($post, 201);
     }
 

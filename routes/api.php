@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UploadController;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -27,10 +28,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 
 Route::prefix('post')->middleware('auth:sanctum')->group(function (){
-    Route::get('/', [Post::class, 'index']);
-    Route::get('/store', [Post::class, 'store']);
-    Route::get('/update', [Post::class, 'update']);
-    Route::put('/delete', [Post::class, 'delete']);
+    Route::get('/', [PostController::class, 'index']);
+    Route::post('/store', [PostController::class, 'store']);
+    Route::put('/update', [PostController::class, 'update']);
+    Route::put('/delete', [PostController::class, 'delete']);
 
-    Route::post('/upload', [UploadController::class, 'upload']);
+    // Route::post('/upload', [UploadController::class, 'upload']);
 });
