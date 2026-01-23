@@ -8,13 +8,11 @@ const useThemeStore = create((set, get) => ({
     toggleTheme: () => {
         const currentTheme = get().theme;
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        console.log('toggle', newTheme);
         get().themeSetter(newTheme);
     },
     themeSetter: (selectedTheme) => {
         const root = document.documentElement;
         const logo = selectedTheme === 'light' ? logo_light : logo_dark;
-        console.log('theme', selectedTheme);
         root.setAttribute('data-theme', selectedTheme)
         set({theme: selectedTheme, logo: logo});
         localStorage.setItem('theme', selectedTheme);

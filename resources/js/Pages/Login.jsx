@@ -44,7 +44,7 @@ export default function Login() {
     }
 
     return (
-        <div className="bg-white flex items-center justify-center h-screen">
+        <div className="bg-white flex items-center justify-center h-[95vh]">
             <div className="bg-[var(--background)] w-[80%] m-auto rounded-2xl flex shadow-lg max-sm:w-full max-sm:rounded-none max-sm:bg-[url('../images/breads.jpg')] bg-cover">
                 <div className="w-[60%] m-auto max-sm:hidden flex items-center justify-center">
                     <div className="bg-[url('../images/breads_eggs.jpg')] bg-cover h-[85vh] rounded-2xl w-[94%] "></div>

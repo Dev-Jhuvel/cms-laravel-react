@@ -1,18 +1,38 @@
 import { useState } from "react";
-import { upload } from "../Services/postService";
+import usePostStore from "../Stores/usePostStore";
+import useGlobalStore from "../Stores/useGlobalStore";
 
 export default function PostModal({ setHidden }) {
-    const [file, setFile] = useState(null);
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+
+    const defaultForm = {
+        title: "",
+        descriptions: "",
+        image: {},
     };
+    const [file, setFile] = useState(null);
+    const [form, setForm] = useState(defaultForm);
+    const {errors, message, storePost, getPost} = usePostStore();
+    const { setLoading } = useGlobalStore();
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        setForm({ ...form, image: selectedFile});
+    };
+
+    const handleChanges = (e) =>{
+        setForm({ ...form, [e.target.name]: e.target.value });
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setHidden();
         const formData = new FormData();
-        formData.append("image", file);
-        const url = await upload(formData);
-        console.log(url);
+        Object.keys(form).forEach((key) =>{
+            formData.append(key, form[key]);
+        });
+        await storePost(formData);
+        getPost();
+        setLoading(false);
     };
     return (
         <div className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -27,6 +47,9 @@ export default function PostModal({ setHidden }) {
                         <div className="py-2">
                             <label className="text-xl">Title:</label>
                             <input
+                                name="title"
+                                value={form.title}
+                                onChange={handleChanges}
                                 type="text"
                                 placeholder="Enjoy our all time favorite breads!"
                                 className="rounded-xl px-2 py-1 w-full bg-[var(--secondary)] max-sm:py-2 text-[var(--accent-text)]"
@@ -35,6 +58,9 @@ export default function PostModal({ setHidden }) {
                         <div className="py-2">
                             <label className="text-xl">Description:</label>
                             <textarea
+                                name="descriptions"
+                                value={form.descriptions}
+                                onChange={handleChanges}
                                 type="text"
                                 placeholder="Describe your post"
                                 className="rounded-xl px-2 py-1 w-full bg-[var(--secondary)] max-sm:py-2 text-[var(--accent-text)]"
@@ -43,6 +69,7 @@ export default function PostModal({ setHidden }) {
                         <div className="py-2 space-x-2">
                             <label className="text-xl">Image:</label>
                             <input
+                                name="image"
                                 type="file"
                                 onChange={handleFileChange}
                                 placeholder="Describe your post"

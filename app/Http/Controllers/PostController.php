@@ -13,7 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::all()->latest();
+        return Post::latest()->get();
     }
 
     /**

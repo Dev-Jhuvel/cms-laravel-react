@@ -11,31 +11,34 @@ import AuthenticatedRoute from "./Components/AuthenticatedRoute.jsx";
 import GuestRoute from "./Components/GuestRoute.jsx";
 import Post from "./Pages/Post.jsx";
 import '../css/app.css';
+import useGlobalStore from "./Stores/useGlobalStore.js";
+import Loading from "./Components/Loading.jsx";
 
 
 const App = () => {
     const [isDark, setIsDark] = useState(false);
-    const { user, isAuthenticated, logout, message } = useAuthStore();
+    const { user, isAuthenticated, logout } = useAuthStore();
     const { toggleTheme: storeToggleTheme  } = useThemeStore();
+    const { loading, message, clearMessage } = useGlobalStore();
     useEffect(() => {
         if (message) {
-            console.log(message);
             message.type === "success"
                 ? toast.success(message.text)
                 : toast.error(message.text);
         }
+        clearMessage();
     }, [message]);
     function toggleTheme(){
         setIsDark(!isDark)
         const theme = isDark ? 'dark' : 'light';
-        console.log(theme);
         storeToggleTheme();
     }
     return (
-        <>
+        <div className="h-screen">
             <Toaster position="top-right" reverseOrder={false} />
             <Router>
-                <nav className="bg-[var(--background)]">
+                { loading ? <Loading/> :
+                <nav className="bg-[var(--background)] h-[5vh]">
                    <ul className="flex items-center justify-between">
                         {isAuthenticated && 
                             <>
@@ -58,6 +61,7 @@ const App = () => {
                         }
                    </ul>
                 </nav>
+                }
                 <Routes>
                     <Route
                         path="/register"
@@ -101,7 +105,7 @@ const App = () => {
                     ></Route>
                 </Routes>
             </Router>
-        </>
+        </div>
     );
 };
 

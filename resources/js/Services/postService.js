@@ -5,13 +5,21 @@ const API = axios.create({
     baseURL: 'http://127.0.0.1:8000/api'
 });
 
-export async function upload(formData){
-    const token = localStorage.getItem('token');
-    const response = await API.post('/post/store', formData, {
+export async function storePost(form, token){
+    const response = await API.post('/post/store', form, {
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data"
         }
     });
     return response.data;
-}
+};
+
+export async function getPost(token){
+    const response = await API.get('/post',{
+        headers:{
+            Authorization: `Bearer ${token}`,
+        }
+    });
+    return response.data;
+};
