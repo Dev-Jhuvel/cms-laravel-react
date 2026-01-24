@@ -3,17 +3,18 @@ import logo_light from "../../images/logo_light.png";
 import logo_dark from "../../images/logo_dark.png";
 
 const useThemeStore = create((set, get) => ({
-    theme:  localStorage.getItem('theme') ?? 'light',
+    theme:  localStorage.getItem('theme') ?? 'caramellatte',
     logo:  logo_light,
     toggleTheme: () => {
         const currentTheme = get().theme;
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        const newTheme = currentTheme === 'caramellatte' ? 'coffee' : 'caramellatte';
+        console.log(newTheme);
         get().themeSetter(newTheme);
     },
     themeSetter: (selectedTheme) => {
         const root = document.documentElement;
-        const logo = selectedTheme === 'light' ? logo_light : logo_dark;
-        root.setAttribute('data-theme', selectedTheme)
+        const logo = selectedTheme === 'caramellatte' ? logo_dark : logo_light;
+        // root.setAttribute('data-theme', selectedTheme)
         set({theme: selectedTheme, logo: logo});
         localStorage.setItem('theme', selectedTheme);
     }

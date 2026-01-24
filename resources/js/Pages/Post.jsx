@@ -3,11 +3,11 @@ import PostModal from "../Modals/PostModal";
 import usePostStore from "../Stores/usePostStore";
 
 export default function Post() {
-    const [isShown, setIsShown] = useState(false);
     const { posts: ApiPost, getPost } = usePostStore();
     const [posts, setPost] = useState([]);
 
     useEffect(() => {
+        setPost(null);
         getPost();
     }, []);
 
@@ -16,33 +16,33 @@ export default function Post() {
     }, [ApiPost]);
     return (
         <>
-            <div className="w-full h-[95vh] bg-[var(--background)]">
-                <div className="m-auto">
-                    <h1 className="text-[var(--background-text)] text-center text-2xl font-bold">
+            <div className="w-full h-full bg-base-200">
+                <div className="px-2">
+                    <h1 className="text-primary text-center text-3xl font-bold">
                         Manage Post
                     </h1>
-                    <button
-                        type="button"
-                        className="button-primary"
-                        onClick={() => {
-                            setIsShown(true);
-                        }}
-                    >
-                        Create New Post
-                    </button>
+                    <button className="btn btn-primary" onClick={() => document.getElementById('create_post_modal').showModal()}>Create New Post</button>
                 </div>
-                {isShown && <PostModal setHidden={() => setIsShown(false)} />}
+                <PostModal/>
                 <div className="w-full py-5">
                     {posts && (
                         <div className="flex flex-wrap justify-center gap-4">
                             {Object.entries(posts).map(([key, value]) => (
-                                <div key={value.id} className="w-50 h-60 border border-black rounded-2xl">
-                                    <div className="w-full h-[70%]">
-                                        <img src={value.image} className="w-full h-full rounded-t-2xl" alt="" />
+                              
+                                <div key={value.id} className="card bg-base-100 w-70 shadow-sm group">
+                                    <figure className="px-5 pt-5 w-full group-hover:p-0">
+                                        <img
+                                        src={value.image}
+                                        alt="Card image"
+                                        className="rounded-xl" />
+                                    </figure>
+                                    <div className="card-body items-center text-center">
+                                        <h2 className="card-title">{value.title}</h2>
+                                        <p className="group-hover:hidden">{value.descriptions}</p>
+                                        {/* <div className="card-actions">
+                                            <button className="btn btn-primary">Buy Now</button>
+                                        </div> */}
                                     </div>
-                                    <p className="font-bold text-lg text-center">{value.title}</p>
-                                    <p className="">{value.descriptions}</p>
-                                    
                                 </div>
                             ))}
                         </div>

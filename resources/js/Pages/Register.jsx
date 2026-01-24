@@ -42,17 +42,13 @@ export default function Register() {
         }
     }, [authError, setErrors]);
 
-    if (isAuthenticated) {
-        return <Navigate to="/home" replace />;
-    }
-
     return (
         <div className="bg-white flex items-center justify-center h-[95vh]">
-            <div className="bg-[var(--background)] w-[80%] m-auto rounded-2xl flex shadow-lg max-sm:w-full max-sm:rounded-none max-sm:bg-[url('../images/breads.jpg')] bg-cover">
+            <div className="bg-base-200 w-[80%] m-auto rounded-2xl flex shadow-lg max-sm:w-full max-sm:rounded-none max-sm:bg-[url('../images/breads.jpg')] bg-cover">
                 <div className="w-[40%] h-[90vh] rounded-l-2xl relative max-sm:w-full max-sm:h-screen backdrop-blur-xs">
                     <div className="w-full h-[23%] max-sm:size-25 m-auto">
                         <img
-                            className="size-25 max-sm:size-18 mt-3 min-md:ml-5 rounded-full inline-flex"
+                            className="size-25 max-sm:size-18 mt-3 md:ml-5 rounded-full inline-flex"
                             src={logo}
                             alt=""
                         />
@@ -62,7 +58,7 @@ export default function Register() {
                             onSubmit={handleSubmit}
                             className="flex flex-col w-full m-auto gap-y-3 max-sm:w-full px-10 max-sm:gap-y-5 "
                         >
-                            <h1 className="text-[var(--background-text)] text-center font-bold text-2xl p-4 max-sm:text-white max-sm:text-3xl">
+                            <h1 className="text-primary text-center font-bold text-2xl p-4 max-sm:text-white max-sm:text-3xl">
                                 Create an Account
                             </h1>
                             <div className="w-full">
@@ -72,7 +68,7 @@ export default function Register() {
                                     value={form.name}
                                     onChange={handleChanges}
                                     placeholder="Full Name"
-                                    className="rounded-xl px-2 py-1 w-full bg-[var(--accent)] max-sm:py-2 text-[var(--accent-text)]"
+                                    className="input input-secondary w-full"
                                 />
                                 {errors.name && (
                                     <p className="text-red-500 text-xs pl-2">
@@ -87,7 +83,7 @@ export default function Register() {
                                     value={form.email}
                                     onChange={handleChanges}
                                     placeholder="Email"
-                                    className="rounded-xl px-2 py-1 w-full bg-[var(--accent)] max-sm:py-2 text-[var(--accent-text)]"
+                                    className="input input-secondary w-full"
                                 />
                                 {errors.email && (
                                     <p className="text-red-500 text-xs pl-2">
@@ -102,7 +98,7 @@ export default function Register() {
                                     value={form.password}
                                     onChange={handleChanges}
                                     placeholder="Password"
-                                    className="rounded-xl px-2 py-1 w-full bg-[var(--accent)] max-sm:py-2 text-[var(--accent-text)]"
+                                    className="input input-secondary w-full"
                                 />
                                 {errors.password && (
                                     <p className="text-red-500 text-xs pl-2">
@@ -116,22 +112,22 @@ export default function Register() {
                                 value={form.password_confirmation}
                                 onChange={handleChanges}
                                 placeholder="Confirm Password"
-                                className="rounded-xl px-2 py-1 w-full bg-[var(--accent)] max-sm:py-2 text-[var(--accent-text)]"
+                                    className="input input-secondary w-full text-primary"
                             />
                             <button
                                 type="submit"
-                                className="bg-[var(--primary)] py-1 text-[var(--primary-text)] rounded-xl max-sm:py-2"
+                                className="btn btn-primary"
                             >
                                 Submit
                             </button>
-                            <p className="text-[var(--background-text)]">
+                            <p className="text-primary">
                                 Already have an account?{" "}
                                 <Link
                                     to="/login"
                                     onClick={() => {
                                         authResetter();
                                     }}
-                                    className="text-[var(--accent)] underline text-center"
+                                    className="link link-accent underline text-center"
                                 >
                                     Login
                                 </Link>

@@ -28,7 +28,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 
 Route::prefix('post')->middleware('auth:sanctum')->group(function (){
-    Route::get('/', [PostController::class, 'index']);
+    Route::get('/{user_id}', [PostController::class, 'index']);
     Route::post('/store', [PostController::class, 'store']);
     Route::put('/update', [PostController::class, 'update']);
     Route::put('/delete', [PostController::class, 'delete']);

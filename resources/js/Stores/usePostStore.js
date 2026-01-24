@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { storePost as ApiStorePost, getPost as ApiGetPost } from "../Services/postService";
 import useGlobalStore from "./useGlobalStore";
+import useAuthStore from "./useAuthStore";
 
 const usePostStore = create((set, get) =>({
     posts: null,
@@ -20,8 +21,10 @@ const usePostStore = create((set, get) =>({
     },
     getPost: async () =>{
         try {
+            set({post: null});
             const token = localStorage.getItem('token');
-            const posts = await ApiGetPost(token);
+            const userId = useAuthStore.getState().user.id;
+            const posts = await ApiGetPost(token, userId);
             set({posts});
         } catch (error) {
             setMessage({type:'error', text:'Error in Fetching Post'});

@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+:root {
+    --primary: #1a1a1a;          /* Deep charcoal for strong anchors */
+    --primary-text: #ffffff;     /* Crisp white text */
+    --secondary: #6b3e26;        /* Warm brown for secondary elements */
+    --secondary-text: #fbe4d6;   /* Soft peach for contrast */
+    --accent: #d97742;           /* Vibrant terracotta accent */
+    --accent-text: #fff7f0;      /* Gentle off-white for accent text */
+    --neutral: #e0a96d;          /* Muted golden neutral */
+    --neutral-text: #2f1b0f;     /* Dark brown text for readability */
+    --background: #fff8f3;       /* Light cream background */
+    --background-text: #3d2a20;  /* Rich brown text */
+}
+
+[data-theme="dark"] {
+    --primary: #f4a261;          /* Warm amber for highlights */
+    --primary-text: #1a1a1a;     /* Charcoal text for contrast */
+    --secondary: #264653;        /* Deep teal for secondary elements */
+    --secondary-text: #cfd8dc;   /* Soft gray-blue text */
+    --accent: #2a9d8f;           /* Bright teal accent */
+    --accent-text: #e0f7f4;      /* Pale aqua for accent text */
+    --neutral: #1d1d1d;          /* Near-black neutral */
+    --neutral-text: #bdbdbd;     /* Light gray text */
+    --background: #121212;       /* True dark background */
+    --background-text: #f1e9dc;  /* Warm beige text for readability */
+}
+
+@layer components {
+    .button-primary {
+        @apply text-white bg-[var(--primary)] box-border border border-transparent hover:bg-[var(--secondary)] focus:ring-2 focus:ring-[var(--primary)] shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2.5 focus:outline-none;
+    }
+    .button-secondary {
+        @apply text-white bg-[var(--secondary)] box-border border border-transparent hover:bg-[var(--primary)] focus:ring-2 focus:ring-[var(--secondary)] shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2.5 focus:outline-none;
+    }
+
+    .button-accent {
+        @apply text-white bg-[var(--accent)] box-border border border-transparent hover:bg-[var(--secondary)] focus:ring-2 focus:ring-[var(--accent)] shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2.5 focus:outline-none;
+    }
+
+    .button {
+        @apply text-white box-border border border-transparent hover:bg-[var(--secondary)] focus:ring-2 focus:ring-[var(--primary)] shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2.5 focus:outline-none;
+    }
+}

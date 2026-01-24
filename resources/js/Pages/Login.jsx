@@ -39,13 +39,9 @@ export default function Login() {
         }
     }, [authError, setErrors]);
 
-    if (isAuthenticated) {
-        return <Navigate to="/home" replace />;
-    }
-
     return (
         <div className="bg-white flex items-center justify-center h-[95vh]">
-            <div className="bg-[var(--background)] w-[80%] m-auto rounded-2xl flex shadow-lg max-sm:w-full max-sm:rounded-none max-sm:bg-[url('../images/breads.jpg')] bg-cover">
+            <div className="bg-base-200 w-[80%] m-auto rounded-2xl flex shadow-lg max-sm:w-full max-sm:rounded-none max-sm:bg-[url('../images/breads.jpg')] bg-cover">
                 <div className="w-[60%] m-auto max-sm:hidden flex items-center justify-center">
                     <div className="bg-[url('../images/breads_eggs.jpg')] bg-cover h-[85vh] rounded-2xl w-[94%] "></div>
                 </div>
@@ -62,8 +58,8 @@ export default function Login() {
                             onSubmit={handleSubmit}
                             className="flex flex-col w-full m-auto gap-y-3 max-sm:w-full px-10 max-sm:gap-y-5 "
                         >
-                            <h1 className="text-[var(--background-text)] text-center font-bold text-2xl p-4 max-sm:text-white max-sm:text-3xl">
-                                Create an Account
+                            <h1 className="text-primary text-center font-bold text-2xl p-4 max-sm:text-white max-sm:text-3xl">
+                                Login to your Account
                             </h1>
                             <div className="w-full">
                                 <input
@@ -72,7 +68,7 @@ export default function Login() {
                                     value={form.email}
                                     onChange={handleChanges}
                                     placeholder="Email"
-                                    className="rounded-xl px-2 py-1 w-full bg-[var(--accent)] max-sm:py-2 text-[var(--accent-text)]"
+                                    className="input input-secondary w-full"
                                 />
                                 {errors.email && (
                                     <p className="text-red-500 text-xs pl-2">
@@ -87,7 +83,7 @@ export default function Login() {
                                     value={form.password}
                                     onChange={handleChanges}
                                     placeholder="Password"
-                                    className="rounded-xl px-2 py-1 w-full bg-[var(--accent)] max-sm:py-2 text-[var(--accent-text)]"
+                                    className="input input-secondary w-full"
                                 />
                                 {errors.password && (
                                     <p className="text-red-500 text-xs pl-2">
@@ -97,18 +93,18 @@ export default function Login() {
                             </div>
                             <button
                                 type="submit"
-                                className="bg-[var(--primary)] py-1 text-[var(--primary-text)] rounded-xl max-sm:py-2"
+                                className="btn btn-primary"
                             >
                                 Submit
                             </button>
-                            <p className="text-[var(--background-text)]">
+                            <p className="text-primary">
                                 Create an account?{" "}
                                 <Link
                                     to="/register"
                                     onClick={() => {
                                         authResetter();
                                     }}
-                                    className="text-[var(--accent)] underline text-center"
+                                    className="link link-accent underline text-center"
                                 >
                                     Register
                                 </Link>

@@ -18,7 +18,7 @@ import Loading from "./Components/Loading.jsx";
 const App = () => {
     const [isDark, setIsDark] = useState(false);
     const { user, isAuthenticated, logout } = useAuthStore();
-    const { toggleTheme: storeToggleTheme  } = useThemeStore();
+    const { toggleTheme: storeToggleTheme, theme  } = useThemeStore();
     const { loading, message, clearMessage } = useGlobalStore();
     useEffect(() => {
         if (message) {
@@ -30,15 +30,15 @@ const App = () => {
     }, [message]);
     function toggleTheme(){
         setIsDark(!isDark)
-        const theme = isDark ? 'dark' : 'light';
+        // const theme = isDark ? 'coffee' : 'caramellatte';
         storeToggleTheme();
     }
     return (
-        <div className="h-screen">
+        <div data-theme={theme} className="h-screen">
             <Toaster position="top-right" reverseOrder={false} />
             <Router>
                 { loading ? <Loading/> :
-                <nav className="bg-[var(--background)] h-[5vh]">
+                <nav className="bg-base-200 h-[5vh]">
                    <ul className="flex items-center justify-between">
                         {isAuthenticated && 
                             <>

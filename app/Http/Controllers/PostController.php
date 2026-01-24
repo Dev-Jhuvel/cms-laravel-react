@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Services\UploadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Post::latest()->get();
+        return Post::latest()->where('user_id', $request->user_id)->get();
     }
 
     /**
@@ -36,6 +37,7 @@ class PostController extends Controller
         $request->image = $url_data['url'];
         $post = Post::create([
             'title'         => $request->title,
+            'user_id'       => Auth::user()->id,
             'descriptions'  => $request->descriptions,
             'image'         => $request->image,
         ]);

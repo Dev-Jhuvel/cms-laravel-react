@@ -60,13 +60,13 @@ const useAuthStore = create((set) =>({
         const token = localStorage.getItem("token");
         if(token){
             apiLogout(token);
+            localStorage.removeItem('token');
+            setMessage({type:'success', text:'Logout Successfully!'})
+            set({user: null, token: null, isAuthenticated: false});
         }
-        localStorage.removeItem('token');
-        setMessage({type:'success', text:'Logout Successfully!'})
-        set({user: null, token: null, isAuthenticated: false});
     },
 
-    authResetter: () => set({errors: null, message: null}),
+    authResetter: () => set({errors: null}),
 
 }));
 

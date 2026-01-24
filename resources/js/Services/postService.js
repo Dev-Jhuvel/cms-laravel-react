@@ -15,8 +15,8 @@ export async function storePost(form, token){
     return response.data;
 };
 
-export async function getPost(token){
-    const response = await API.get('/post',{
+export async function getPost(token, id){
+    const response = await API.get(`/post/${id}`,{
         headers:{
             Authorization: `Bearer ${token}`,
         }
