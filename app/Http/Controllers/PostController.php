@@ -14,7 +14,11 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        return Post::latest()->where('user_id', $request->user_id)->get();
+        return Post::latest()->where([
+            'user_id' => $request->user_id,
+            'active'=> 1,
+            'deleted'=> 0,
+        ])->paginate(10);
     }
 
     /**
@@ -32,9 +36,9 @@ class PostController extends Controller
     {
         $url_data = $service->upload($request);
         if(isset($url_data['error'])){
-            return response()->json($url_data, 400);
+            // return response()->json($url_data, 400);
         }
-        $request->image = $url_data['url'];
+        $request->image = $url_data['url'] ?? '';
         $post = Post::create([
             'title'         => $request->title,
             'user_id'       => Auth::user()->id,

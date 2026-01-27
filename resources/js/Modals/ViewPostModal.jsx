@@ -1,8 +1,9 @@
 import { useState } from "react";
 import usePostStore from "../Stores/usePostStore";
 import useGlobalStore from "../Stores/useGlobalStore";
+import useThemeStore from "../Stores/useThemeStore";
 
-export default function PostModal() {
+export default function ViewPostModal({post}) {
     const defaultForm = {
         title: "",
         descriptions: "",
@@ -11,7 +12,7 @@ export default function PostModal() {
     const [file, setFile] = useState(null);
     const [form, setForm] = useState(defaultForm);
     const { errors, message, storePost, getPost } = usePostStore();
-    const { setLoading } = useGlobalStore();
+    const {logo} = useThemeStore();
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         setForm({ ...form, image: selectedFile });
@@ -25,25 +26,27 @@ export default function PostModal() {
         e.preventDefault();
         document.getElementById('create_post_modal').close();
         setForm(defaultForm);
-        setLoading(true);
         const formData = new FormData();
         Object.keys(form).forEach((key) => {
             formData.append(key, form[key]);
         });
         await storePost(formData);
         getPost();
-        setLoading(false);
     };
     return (
-        <dialog id="create_post_modal" className="modal">
-            <div className="modal-box">
-                <h3 className="text-lg font-bold"> Create a new Post</h3>
+        <dialog id="view_post_modal" className="modal">
+            <div className="modal-box  w-12/12 max-w-7xl">
+                <h3 className="text-lg font-bold pb-2"> View Post</h3>
                 <form method="dialog">
                     <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
                         ✕
                     </button>
                 </form>
-                <form onSubmit={handleSubmit} className="mx-auto">
+                {post.image && (
+                    <div className="w-full h-[50vh] bg-cover bg-center" style={{backgroundImage: `url(${post.image})`}}/>
+                )}
+                    
+                 {/* <form onSubmit={handleSubmit} className="mx-auto"> */}
                     <fieldset className="fieldset">
                         <legend className="fieldset-legend text-lg">
                             Title
@@ -51,7 +54,8 @@ export default function PostModal() {
                         <input
                             type="text"
                             name="title"
-                            value={form.title}
+                            disabled
+                            value={post.title}
                             onChange={handleChanges}
                             className="input input-secondary w-full"
                             placeholder="Enjoy our all time favorite breads!"
@@ -64,31 +68,20 @@ export default function PostModal() {
                         <textarea
                             type="text"
                             name="descriptions"
-                            value={form.descriptions}
+                            disabled
+                            value={post.descriptions}
                             onChange={handleChanges}
                             className="textarea textarea-secondary w-full"
                             placeholder="Describe your post...."
                         ></textarea>
                     </fieldset>
-                    <fieldset className="fieldset">
-                        <legend className="fieldset-legend">
-                            Pick a Image
-                        </legend>
-                        <input
-                            type="file"
-                            name="image"
-                            className="file-input"
-                            onChange={handleFileChange}
-                        />
-                        <label className="label">Max size 2MB</label>
-                    </fieldset>
                     <hr />
-                    <div className="modal-action mt-3">
+                    {/* <div className="modal-action mt-3">
                         <button type="submit" className="btn btn-primary">
                             Create
                         </button>
-                    </div>
-                </form>
+                    </div> */}
+                {/* </form> */}
             </div>
         </dialog>
     );

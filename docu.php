@@ -8,6 +8,7 @@
 // npm install react-hot-toast
 // npm install zustand
 // npm install axios
+// npm install daisyui
 
 # restart 404 problem
 // Route::get('/{any}', function () {
