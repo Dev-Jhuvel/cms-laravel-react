@@ -35,7 +35,7 @@ export default function ViewPostModal({post}) {
     };
     return (
         <dialog id="view_post_modal" className="modal">
-            <div className="modal-box  w-12/12 max-w-7xl">
+            <div className="modal-box">
                 <h3 className="text-lg font-bold pb-2"> View Post</h3>
                 <form method="dialog">
                     <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -43,7 +43,10 @@ export default function ViewPostModal({post}) {
                     </button>
                 </form>
                 {post.image && (
-                    <div className="w-full h-[50vh] bg-cover bg-center" style={{backgroundImage: `url(${post.image})`}}/>
+                    <figure className="flex justify-center items-center">
+                        <img className="rounded-2xl shadow-2xl" src={post.image} alt="" />
+                    </figure>
+                    // <div className="w-full h-[50vh] bg-cover bg-center" style={{backgroundImage: `url(${post.image})`}}/>
                 )}
                     
                  {/* <form onSubmit={handleSubmit} className="mx-auto"> */}

@@ -9,6 +9,7 @@
 // npm install zustand
 // npm install axios
 // npm install daisyui
+// npm install lucide-react
 
 # restart 404 problem
 // Route::get('/{any}', function () {

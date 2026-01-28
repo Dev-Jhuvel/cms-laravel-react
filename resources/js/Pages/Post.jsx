@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import CreatePostModal from "../Modals/CreatePostModal";
+import PostModal from "../Modals/PostModal";
 import ViewPostModal from "../Modals/ViewPostModal";
 import usePostStore from "../Stores/usePostStore";
 import useThemeStore from "../Stores/useThemeStore";
@@ -10,6 +10,7 @@ export default function Post() {
     const { logo } = useThemeStore();
     const [posts, setPost] = useState([]);
     const [selectedPost, setSelectedPost] = useState([]);
+    const [method, setMethod] = useState('');
 
     useEffect(() => {
         setPost(null);
@@ -34,16 +35,15 @@ export default function Post() {
                     </h1>
                     <button
                         className="btn btn-primary"
-                        onClick={() =>
-                            document
-                                .getElementById("create_post_modal")
-                                .showModal()
-                        }
+                        onClick={() =>{
+                            document.getElementById("create_post_modal").showModal();
+                            setMethod('create');
+                        }}
                     >
                         Create New Post
                     </button>
                 </div>
-                <CreatePostModal />
+                <PostModal method={method} post={selectedPost} setMethod={setMethod} />
                 <div className="w-full py-5 px-10">
                     {posts.length > 0 && (
                         <div className="w-full">
@@ -52,12 +52,9 @@ export default function Post() {
                                     <div
                                         key={post.id}
                                         className="card bg-base-100 w-80 h-70 shadow-sm group"
-                                        onClick={() => {
-                                            document
-                                                .getElementById(
-                                                    "view_post_modal",
-                                                )
-                                                .showModal();
+                                        onClick={() => { 
+                                            document.getElementById( "create_post_modal").showModal();
+                                            setMethod('view');
                                             setSelectedPost(post);
                                         }}
                                     >

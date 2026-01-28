@@ -67,9 +67,20 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, UploadService $service, $post_id)
     {
-        $post->update($request->all());
+        dd($request);
+        $post = Post::find($post_id);
+        $url_data = $service->upload($request);
+        if(isset($url_data['error'])){
+            // return response()->json($url_data, 400);
+        }
+        $request->image = $url_data['url'] ?? '';
+        $post->update([
+            'title'         => $request->title,
+            'descriptions'  => $request->descriptions,
+            'image'         => $request->image,
+        ]);
         return response()->json($post, 201);
     }
 

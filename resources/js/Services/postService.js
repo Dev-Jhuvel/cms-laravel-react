@@ -37,3 +37,13 @@ export async function getPage(url){
     });
     return response.data;
 };
+
+export async function editPost(form, postId){
+    const response = await API.put(`/post/update/${postId}`, form, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
+        }
+    });
+    return response.data;
+};
