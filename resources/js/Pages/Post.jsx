@@ -45,13 +45,13 @@ export default function Post() {
                 </div>
                 <PostModal method={method} post={selectedPost} setMethod={setMethod} />
                 <div className="w-full py-5 px-10">
-                    {posts.length > 0 && (
+                    {posts && (
                         <div className="w-full">
-                            <div className="flex flex-wrap justify-center gap-4">
+                            <div className="flex flex-wrap justify-center gap-2">
                                 {Object.entries(posts).map(([key, post]) => (
                                     <div
                                         key={post.id}
-                                        className="card bg-base-100 w-80 h-70 shadow-sm group"
+                                        className="card bg-base-100 w-80 h-65 shadow-sm group"
                                         onClick={() => { 
                                             document.getElementById( "create_post_modal").showModal();
                                             setMethod('view');

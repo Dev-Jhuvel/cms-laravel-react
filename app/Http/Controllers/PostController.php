@@ -18,7 +18,7 @@ class PostController extends Controller
             'user_id' => $request->user_id,
             'active'=> 1,
             'deleted'=> 0,
-        ])->paginate(10);
+        ])->paginate(8);
     }
 
     /**
@@ -67,10 +67,9 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, UploadService $service, $post_id)
+    public function update(Request $request, UploadService $service)
     {
-        dd($request);
-        $post = Post::find($post_id);
+        $post = Post::find($request->post_id);
         $url_data = $service->upload($request);
         if(isset($url_data['error'])){
             // return response()->json($url_data, 400);
@@ -87,21 +86,21 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
-    {
-        //
-    }
+    // public function destroy(Post $post)
+    // {
+    //     //
+    // }
 
     /**
      * Set it as deleted a  specified resource from storage.
      */
-    public function delete(Post $post)
+    public function destroy(Request $request, $post_id)
     {
+        $post = Post::find($post_id);
         $post->update([
-            'active' => 1,
+            'active' => 0,
             'deleted' => 1,
         ]);
-        return response()->json(['message' => 'Post is deleted.'], 201);
-
+        return response()->json([$post, 'message' => 'Post is deleted.'], 201);
     }
 }

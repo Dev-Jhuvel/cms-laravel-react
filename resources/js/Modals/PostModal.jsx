@@ -14,7 +14,7 @@ export default function PostModal({method, post = {}, setMethod = {}}) {
     const [file, setFile] = useState("");
     const [form, setForm] = useState(defaultForm);
     const [imagePreview, setImagePreview] = useState("");
-    const {errors, message, storePost, getPost, editPost } = usePostStore();
+    const {errors, message, storePost, getPost, editPost, deletePost } = usePostStore();
     const {setMessage} = useGlobalStore();
     const fileInputRef = useRef("");
 
@@ -144,7 +144,7 @@ export default function PostModal({method, post = {}, setMethod = {}}) {
                 {(method === 'view') && (
                     <div className="modal-action mt-3">
                         <button className="btn btn-primary" onClick={()=>setMethod('edit')}>Edit Post</button>
-                        <button className="btn btn-primary" onClick={()=>setMethod('edit')}>Delete</button>
+                        <button className="btn btn-primary" onClick={()=>deletePost(post.id)}>Delete</button>
                     </div>
                 )}
             </div>

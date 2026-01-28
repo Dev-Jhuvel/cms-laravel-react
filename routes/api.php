@@ -30,8 +30,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::prefix('post')->middleware('auth:sanctum')->group(function (){
     Route::get('/{user_id}', [PostController::class, 'index']);
     Route::post('/store', [PostController::class, 'store']);
-    Route::put('/update/{post_id}', [PostController::class, 'update']);
-    Route::put('/delete', [PostController::class, 'delete']);
+    Route::post('/update/{post_id}', [PostController::class, 'update']);
+    Route::delete('/delete/{post_id}', [PostController::class, 'destroy']);
 
     // Route::post('/upload', [UploadController::class, 'upload']);
 });

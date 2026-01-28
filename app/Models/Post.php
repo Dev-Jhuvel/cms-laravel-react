@@ -15,5 +15,7 @@ class Post extends Model
         'user_id',
         'descriptions',
         'image',
+        'active',
+        'deleted',
     ];
 }

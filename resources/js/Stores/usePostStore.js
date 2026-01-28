@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { storePost as ApiStorePost, getPost as ApiGetPost, getPage as ApiGetPage, editPost as ApiEditPost } from "../Services/postService";
+import { storePost as ApiStorePost, getPost as ApiGetPost, getPage as ApiGetPage, editPost as ApiEditPost, deletePost as ApiDeletePost } from "../Services/postService";
 import useGlobalStore from "./useGlobalStore";
 import useAuthStore from "./useAuthStore";
 
@@ -50,6 +50,22 @@ const usePostStore = create((set, get) =>({
             setMessage({type:'success', text:'Post Edited'});
         } catch (error) {
             setMessage({type:'error', text:'Error in Editing Post'});
+            set({errors: error.response.data.errors});
+        }finally{
+            setLoading(false)
+        }
+    },
+
+    deletePost: async (postId) =>{
+        set({errors: null});
+        const setMessage = useGlobalStore.getState().setMessage;
+        const setLoading = useGlobalStore.getState().setLoading;
+        setLoading(true);
+        try {
+            await ApiDeletePost(postId);
+            setMessage({type:'success', text:'Post Deleted'});
+        } catch (error) {
+            setMessage({type:'error', text:'Error in Deleting Post'});
             set({errors: error.response.data.errors});
         }finally{
             setLoading(false)

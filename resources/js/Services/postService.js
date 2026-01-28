@@ -39,10 +39,19 @@ export async function getPage(url){
 };
 
 export async function editPost(form, postId){
-    const response = await API.put(`/post/update/${postId}`, form, {
+    const response = await API.post(`/post/update/${postId}`, form, {
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data"
+        }
+    });
+    return response.data;
+};
+
+export async function deletePost(postId){
+    const response = await API.delete(`/post/delete/${postId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
         }
     });
     return response.data;
