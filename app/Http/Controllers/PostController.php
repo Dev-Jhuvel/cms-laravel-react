@@ -75,11 +75,18 @@ class PostController extends Controller
             // return response()->json($url_data, 400);
         }
         $request->image = $url_data['url'] ?? '';
-        $post->update([
+        $data = [
             'title'         => $request->title,
             'descriptions'  => $request->descriptions,
-            'image'         => $request->image,
-        ]);
+        ];
+
+        if(!empty($request->image)){
+            dd($request->image);
+            $data['image'] = $request->image;
+        }
+
+        $post->update($data);
+        
         return response()->json($post, 201);
     }
 
@@ -94,7 +101,7 @@ class PostController extends Controller
     /**
      * Set it as deleted a  specified resource from storage.
      */
-    public function destroy(Request $request, $post_id)
+    public function destroy($post_id)
     {
         $post = Post::find($post_id);
         $post->update([

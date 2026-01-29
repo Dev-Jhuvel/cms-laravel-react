@@ -11,7 +11,7 @@ export default function GuestRoute({ children }) {
 
     if (isAuthenticated) {
         return <Navigate to="/home" />;
-    }
+    }else
 
     return children;
 }

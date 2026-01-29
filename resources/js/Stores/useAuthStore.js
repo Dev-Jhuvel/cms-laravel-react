@@ -7,6 +7,7 @@ import {
 } from "../Services/authService";
 import useGlobalStore from "./useGlobalStore";
 import { persist } from "zustand/middleware";
+import { useNavigate } from "react-router-dom";
 const useAuthStore = create(
     persist((set) => ({
         user: null,
@@ -65,7 +66,7 @@ const useAuthStore = create(
             }
         },
 
-        logout: async () => {
+        logout: async (navigate) => {
             const setMessage = useGlobalStore.getState().setMessage;
             const token = localStorage.getItem("token");
             if (token) {
@@ -74,6 +75,7 @@ const useAuthStore = create(
                 setMessage({ type: "success", text: "Logout Successfully!" });
                 set({ user: null, token: null, isAuthenticated: false });
             }
+            navigate('/login');
         },
 
         authResetter: () => set({ errors: null }),

@@ -28,13 +28,13 @@ export default function Post() {
 
     return (
         <>
-            <div className="w-full h-[95vh] bg-base-200">
-                <div className="px-2">
+            <div className="w-full  bg-base-200 ">
+                <div className="px-2 pt-10">
                     <h1 className="text-primary text-center text-3xl font-bold">
                         Manage Post
                     </h1>
                     <button
-                        className="btn btn-primary"
+                        className="btn btn-primary ml-5"
                         onClick={() =>{
                             document.getElementById("create_post_modal").showModal();
                             setMethod('create');
@@ -47,7 +47,7 @@ export default function Post() {
                 <div className="w-full py-5 px-10">
                     {posts && (
                         <div className="w-full">
-                            <div className="flex flex-wrap justify-center gap-2">
+                            <div className="flex flex-wrap justify-center gap-2 h-[72vh]">
                                 {Object.entries(posts).map(([key, post]) => (
                                     <div
                                         key={post.id}
