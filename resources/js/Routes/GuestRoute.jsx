@@ -7,11 +7,11 @@ export default function GuestRoute({ children }) {
 
     useEffect(() => {
         fetchUser();
-    }, [fetchUser]);
+    }, []);
 
     if (isAuthenticated) {
-        return <Navigate to="/home" />;
-    }else
+        return <Navigate to="/" />;
+    }
 
     return children;
 }

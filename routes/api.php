@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UploadController;
 use App\Models\Post;
@@ -27,11 +28,16 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 
-Route::prefix('post')->middleware('auth:sanctum')->group(function (){
+Route::prefix('posts')->middleware('auth:sanctum')->group(function (){
     Route::get('/{user_id}', [PostController::class, 'index']);
     Route::post('/store', [PostController::class, 'store']);
     Route::post('/update/{post_id}', [PostController::class, 'update']);
     Route::delete('/delete/{post_id}', [PostController::class, 'destroy']);
+});
 
-    // Route::post('/upload', [UploadController::class, 'upload']);
+Route::prefix('categories')->middleware('auth:sanctum')->group(function (){
+    Route::get('/{user_id}', [CategoryController::class, 'index']);
+    Route::post('/store', [CategoryController::class, 'store']);
+    Route::post('/update/{post_id}', [CategoryController::class, 'update']);
+    Route::delete('/delete/{post_id}', [CategoryController::class, 'destroy']);
 });

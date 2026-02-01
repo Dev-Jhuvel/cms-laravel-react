@@ -21,13 +21,6 @@ class PostController extends Controller
         ])->paginate(8);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -48,21 +41,6 @@ class PostController extends Controller
         return response()->json($post, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        return $post;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
-       //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -70,6 +48,11 @@ class PostController extends Controller
     public function update(Request $request, UploadService $service)
     {
         $post = Post::find($request->post_id);
+
+        if(!$post){
+            return response()->json(['message' => 'Post not Found.'], 404);
+        }
+        
         $url_data = $service->upload($request);
         if(isset($url_data['error'])){
             // return response()->json($url_data, 400);
@@ -81,7 +64,6 @@ class PostController extends Controller
         ];
 
         if(!empty($request->image)){
-            dd($request->image);
             $data['image'] = $request->image;
         }
 
@@ -91,19 +73,16 @@ class PostController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     */
-    // public function destroy(Post $post)
-    // {
-    //     //
-    // }
-
-    /**
      * Set it as deleted a  specified resource from storage.
      */
     public function destroy($post_id)
     {
         $post = Post::find($post_id);
+        
+        if(!$post){
+            return response()->json(['message' => 'Post not Found.'], 404);
+        }
+
         $post->update([
             'active' => 0,
             'deleted' => 1,

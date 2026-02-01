@@ -1,58 +1,30 @@
-import axios from "axios";
+import { headers, API, token} from "./SERVICE_CONSTANTS";
 
 
-const API = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api'
-});
-
-const token = localStorage.getItem('token');
-
-export async function storePost(form){
-    const response = await API.post('/post/store', form, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data"
-        }
-    });
+export async function storePost(form) {
+    const response = await API.post("/posts/store", form, imageHeaders);
     return response.data;
-};
+}
 
-export async function getPost(option = {}){
+export async function getPost(option = {}) {
     let url;
-    if(option.id) url = `/post/${option.id}`;
-    if(option.url) url = option.url;
-    const response = await API.get(url,{
-        headers:{
-            Authorization: `Bearer ${token}`,
-        }
-    });
+    if (option.id) url = `/posts/${option.id}`;
+    if (option.url) url = option.url;
+    const response = await API.get(url, headers);
     return response.data;
-};
+}
 
-export async function getPage(url){
-    const response = await API.get(url ,{
-        headers:{
-            Authorization: `Bearer ${token}`,
-        }
-    });
+export async function getPage(url) {
+    const response = await API.get(url, headers);
     return response.data;
-};
+}
 
-export async function editPost(form, postId){
-    const response = await API.post(`/post/update/${postId}`, form, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data"
-        }
-    });
+export async function editPost(form, postId) {
+    const response = await API.post(`/posts/update/${postId}`, form, imageHeaders);
     return response.data;
-};
+}
 
-export async function deletePost(postId){
-    const response = await API.delete(`/post/delete/${postId}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        }
-    });
+export async function deletePost(postId) {
+    const response = await API.delete(`/posts/delete/${postId}`, headers);
     return response.data;
-};
+}

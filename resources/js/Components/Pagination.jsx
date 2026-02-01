@@ -16,7 +16,7 @@ export default function Pagination({ links, onPageChange }) {
                             <button
                                 key={index}
                                 disabled={!link.url}
-                                className={`join-item btn btn-outline disabled:border-accent ${link.active ? "bg-base-300  " : ""}`}
+                                className={`join-item btn btn-outline disabled:border-primary ${link.active ? "bg-base-300  " : ""}`}
                                 onClick={() => { link.url && onPageChange(link.url)}}
                             >
                                 {decodeHtml(link.label)}

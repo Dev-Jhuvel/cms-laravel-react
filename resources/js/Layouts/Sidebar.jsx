@@ -1,37 +1,40 @@
 import {
     Settings2,
-    SidebarClose,
-    SidebarOpen,
     Sidebar as SidebarIcon,
-    MonitorUp,
-    ChartBar,
-    BarChart,
     ChartNetwork,
     LogOutIcon,
     Star,
     Moon,
     Sun,
+    Wallpaper,
+    Folders,
 } from "lucide-react";
-import { Link, Route, BrowserRouter as Router, Routes, useNavigate } from "react-router-dom";
+import {
+    Link,
+    Route,
+    BrowserRouter as Router,
+    Routes,
+    useNavigate,
+} from "react-router-dom";
 import { useState } from "react";
-import GuestRoute from "../Components/GuestRoute";
-import AuthenticatedRoute from "../Components/AuthenticatedRoute";
+import AuthenticatedRoute from "../Routes/AuthenticatedRoute";
 import Home from "../Pages/Home";
 import Post from "../Pages/Post";
 import useAuthStore from "../Stores/useAuthStore";
 import useThemeStore from "../Stores/useThemeStore";
+import RouteList from "../Routes/RouteList";
 
 export default function Sidebar() {
     const { logout } = useAuthStore();
     const { toggleTheme, theme, logo } = useThemeStore();
-    const navigate = useNavigate()
 
-    const pages = [
+   const pages = [
         { text: "Dashboard", icon: ChartNetwork, url: "/", click: "" },
-        { text: "Settings", icon: Settings2, url: "/", click: "" },
-        { text: "Post", icon: MonitorUp, url: "/post", click: "" },
+        // { text: "Settings", icon: Settings2, url: "/", click: "" },
+        { text: "Posts", icon: Wallpaper, url: "/posts", click: "" },
+        { text: "Categories", icon: Folders, url: "/categories", click: "" },
         { text: "Theme", icon: theme === 'coffee' ? Moon : Sun, url: "", click:  toggleTheme },
-        { text: "Logout", icon: LogOutIcon, url: "", click: () => logout(navigate) },
+        { text: "Logout", icon: LogOutIcon, url: "", click: () => logout() },
     ];
 
     return (
@@ -53,32 +56,7 @@ export default function Sidebar() {
                     </nav> */}
                 {/* Page content here */}
                 <div className="w-full">
-                    <Routes>
-                        <Route
-                            path="/home"
-                            element={
-                                <AuthenticatedRoute>
-                                    <Home />
-                                </AuthenticatedRoute>
-                            }
-                        ></Route>
-                        <Route
-                            path="/post"
-                            element={
-                                <AuthenticatedRoute>
-                                    <Post />
-                                </AuthenticatedRoute>
-                            }
-                        ></Route>
-                        <Route
-                            path="/"
-                            element={
-                                <AuthenticatedRoute>
-                                    <Home />
-                                </AuthenticatedRoute>
-                            }
-                        ></Route>
-                    </Routes>
+                    <RouteList />
                 </div>
             </div>
 
@@ -88,7 +66,7 @@ export default function Sidebar() {
                     aria-label="close sidebar"
                     className="drawer-overlay"
                 ></label>
-                <div className="flex min-h-full flex-col items-start bg-base-100 is-drawer-close:w-18 is-drawer-open:w-36 ">
+                <div className="flex min-h-full flex-col items-start bg-base-100 is-drawer-close:w-18 is-drawer-open:w-36">
                     <div className="mt-10 flex items-center justify-center text-center w-full">
                         <p className="font-bold text-4xl w-full text-center is-drawer-close:hidden mb-5">
                             Au bon
@@ -99,7 +77,7 @@ export default function Sidebar() {
                             alt=""
                         />
                     </div>
-                    <ul className="menu w-full grow">
+                    <ul className="menu w-full grow px-2">
                         {Object.entries(pages).map(([key, page]) => {
                             const PageIcon = page.icon;
                             return (

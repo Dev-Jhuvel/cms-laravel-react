@@ -66,7 +66,7 @@ const useAuthStore = create(
             }
         },
 
-        logout: async (navigate) => {
+        logout: async () => {
             const setMessage = useGlobalStore.getState().setMessage;
             const token = localStorage.getItem("token");
             if (token) {
@@ -75,7 +75,6 @@ const useAuthStore = create(
                 setMessage({ type: "success", text: "Logout Successfully!" });
                 set({ user: null, token: null, isAuthenticated: false });
             }
-            navigate('/login');
         },
 
         authResetter: () => set({ errors: null }),

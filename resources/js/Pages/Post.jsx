@@ -1,25 +1,20 @@
 import { useEffect, useState } from "react";
 import PostModal from "../Modals/PostModal";
-import ViewPostModal from "../Modals/ViewPostModal";
 import usePostStore from "../Stores/usePostStore";
 import useThemeStore from "../Stores/useThemeStore";
 import Pagination from "../Components/Pagination";
 
 export default function Post() {
-    const { posts: ApiPost, getPost, links } = usePostStore();
+    const { posts,  getPost, links } = usePostStore();
     const { logo } = useThemeStore();
-    const [posts, setPost] = useState([]);
-    const [selectedPost, setSelectedPost] = useState([]);
+    const [selectedPost, setSelectedPost] = useState({});
     const [method, setMethod] = useState('');
+    // const [posts, setPost] = useState([]);
 
     useEffect(() => {
-        setPost(null);
+        // setPost(null);
         getPost();
     }, []);
-
-    useEffect(() => {
-        setPost(ApiPost);
-    }, [ApiPost]);
 
     function truncate(text = "", length = 20) {
         if (!text) return;
@@ -28,15 +23,15 @@ export default function Post() {
 
     return (
         <>
-            <div className="w-full  bg-base-200 ">
+            <div className="w-full bg-base-200 ">
                 <div className="px-2 pt-10">
                     <h1 className="text-primary text-center text-3xl font-bold">
-                        Manage Post
+                        Manage Posts
                     </h1>
                     <button
                         className="btn btn-primary ml-5"
                         onClick={() =>{
-                            document.getElementById("create_post_modal").showModal();
+                            document.getElementById("post_modal").showModal();
                             setMethod('create');
                         }}
                     >
@@ -45,10 +40,10 @@ export default function Post() {
                 </div>
                 <PostModal method={method} post={selectedPost} setMethod={setMethod} />
                 <div className="w-full py-5 px-10">
-                    {posts && (
+                    {posts ? (
                         <div className="w-full">
                             <div className="flex flex-wrap justify-center gap-2 h-[72vh]">
-                                {Object.entries(posts).map(([key, post]) => (
+                                {posts.map((post) => (
                                     <div
                                         key={post.id}
                                         className="card bg-base-100 w-80 h-65 shadow-sm group"
@@ -82,9 +77,29 @@ export default function Post() {
                                         </div>
                                     </div>
                                 ))}
-                                <ViewPostModal post={selectedPost} />
                             </div>
                             <Pagination links={links} onPageChange={getPost} />
+                        </div>
+                    ) : (
+                          <div className="w-full">
+                            <div className="flex flex-wrap justify-center gap-2 h-[72vh]">
+                               {Array.from({length: 8}).map((v,i) =>{
+                                    return (
+                                    <div
+                                        key={i}
+                                        className="card bg-base-100 w-80 h-60 shadow-sm group"
+                                       
+                                    >
+                                        <div className="skeleton m-3 h-full w-[90%] bg-base-300 rounded-xl overflow-y-scroll">
+                                        </div>
+                                        <div className="w-full">
+                                           <div className="skeleton w-[90%] bg-base-300 h-4 mx-auto"></div>
+                                           <div className="skeleton w-[90%] bg-base-300 h-4 mx-auto my-3"></div>
+                                        </div>
+                                    </div>
+                                    )
+                               })}
+                            </div>
                         </div>
                     )}
                 </div>

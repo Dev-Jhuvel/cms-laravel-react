@@ -4,17 +4,17 @@ import useGlobalStore from "../Stores/useGlobalStore";
 import { Trash } from "lucide-react";
 
 
-export default function PostModal({method, post = {}, setMethod = {}}) {
+export default function PostModal({method, post = {}, setMethod = () => {}}) {
     const defaultForm = {
         title: "",
         descriptions: "",
-        image: "",
     };
+   
 
     const [file, setFile] = useState("");
     const [form, setForm] = useState(defaultForm);
     const [imagePreview, setImagePreview] = useState("");
-    const {errors, message, storePost, getPost, editPost, deletePost } = usePostStore();
+    const {storePost, getPost, editPost, deletePost } = usePostStore();
     const {setMessage} = useGlobalStore();
     const fileInputRef = useRef("");
 
@@ -23,8 +23,7 @@ export default function PostModal({method, post = {}, setMethod = {}}) {
         if(!selectedFile.type.startsWith('image/')){
             return setMessage({type: 'error', text: 'Please select an image file'});
         }
-        setForm({ ...form, image: selectedFile });
-
+        setFile(selectedFile);
         const reader = new FileReader();
         reader.onloadend = () =>{
             setImagePreview(reader.result)
@@ -39,23 +38,22 @@ export default function PostModal({method, post = {}, setMethod = {}}) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         document.getElementById('create_post_modal').close();
-        setForm(defaultForm);
+        // setForm(defaultForm);
+
         const formData = new FormData();
-        Object.keys(form).forEach((key) => {
-            formData.append(key, form[key]);
-        });
+        formData.append('title', form.title);
+        formData.append('descriptions', form.descriptions);
+        if(file) formData.append('image', file);
 
         if(method === 'create'){
             await storePost(formData);
-            getPost();
         }else{
             await editPost(formData, post.id);
-            getPost();
         }
+        getPost();
     };
 
     const removeImage = () =>{
-        setForm({...form, image: ""});
         setImagePreview("");
         if(fileInputRef.current){
             fileInputRef.current.value = '';
@@ -63,15 +61,22 @@ export default function PostModal({method, post = {}, setMethod = {}}) {
     }
 
     useEffect(() =>{
-        setForm({
-            title: post.title ?? "",
-            descriptions: post.descriptions ?? "",
-            image: post.image ?? "",
-        });
+        if(method == 'create'){
+            setFile("");
+            setForm(defaultForm);
+            setImagePreview("");
+        }else{
+            setForm({
+                title: post.title ?? "",
+                descriptions: post.descriptions ?? "",
+            });
         setImagePreview(post.image ?? "");
-    }, [post]);
+        }
+    }, [post, method]);
+
+   
     return (
-        <dialog id="create_post_modal" className="modal">
+        <dialog id="post_modal" className="modal">
             <div className="modal-box">
                 <h3 className="text-lg font-bold"> {method === 'create' ? ' Create a new ' : method === 'view' ? 'View ' : 'Edit '} Post</h3>
                 <hr />

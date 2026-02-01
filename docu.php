@@ -23,6 +23,9 @@
 
 // in api always use auth:sanctum as middleware
 
+
+// php artisan make:model Categories -mcr
+
 #Git
 //git init
 //git add .

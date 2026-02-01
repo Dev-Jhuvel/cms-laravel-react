@@ -18,4 +18,8 @@ class Post extends Model
         'active',
         'deleted',
     ];
+
+    public function category(){
+        return $this->hasOne(Category::class);
+    }
 }
