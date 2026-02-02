@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id')->nullable()->index();
+            $table->uuid('category_id')->nullable()->index();
             $table->string('title')->nullable()->comment('Title of the post');
             $table->text('descriptions')->nullable()->comment('Description of the post');
             $table->text('image')->nullable()->comment('Image of the post');
             $table->tinyInteger('active')->default(1);
             $table->tinyInteger('deleted')->default(0);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

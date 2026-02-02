@@ -23,6 +23,7 @@ const usePostStore = create((set, get) => ({
             await ApiStorePost(form);
             setMessage({ type: "success", text: "New Post Uploaded!" });
         } catch (error) {
+            console.log(error);
             setMessage({ type: "error", text: "Error in Uploading Post" });
             if (error.response) set({ errors: error.response.data.errors });
         } finally {

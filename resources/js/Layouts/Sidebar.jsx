@@ -40,7 +40,7 @@ export default function Sidebar() {
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content">
+            <div className="drawer-content bg-base-200">
                 {/* Navbar */}
                 {/* <nav className="navbar w-full bg-base-300">
                         <label

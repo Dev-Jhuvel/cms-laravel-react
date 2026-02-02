@@ -15,8 +15,7 @@ class CategoryController extends Controller
         $categories =  Category::where([
             'active' => 1,
             'deleted' => 0,
-        ])->sort('name')->paginate(10);
-
+        ])->orderBy('name')->paginate(10);
         return response()->json($categories, 200);
     }
 
@@ -26,7 +25,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate(['name' => 'required']);
+        $validated = $request->validate(['name' => 'required|unique:categories,name']);
 
         $category = Category::create($validated);
 

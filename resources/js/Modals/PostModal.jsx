@@ -37,7 +37,7 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        document.getElementById('create_post_modal').close();
+        document.getElementById('post_modal').close();
         // setForm(defaultForm);
 
         const formData = new FormData();
@@ -45,6 +45,7 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
         formData.append('descriptions', form.descriptions);
         if(file) formData.append('image', file);
 
+        console.log(method);
         if(method === 'create'){
             await storePost(formData);
         }else{
@@ -149,7 +150,10 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
                 {(method === 'view') && (
                     <div className="modal-action mt-3">
                         <button className="btn btn-primary" onClick={()=>setMethod('edit')}>Edit Post</button>
-                        <button className="btn btn-primary" onClick={()=>deletePost(post.id)}>Delete</button>
+                        <button className="btn btn-primary" onClick={()=>{
+                            deletePost(post.id);
+                            getPost();
+                            }}>Delete</button>
                     </div>
                 )}
             </div>

@@ -1,7 +1,8 @@
-import { headers, API, token} from "./SERVICE_CONSTANTS";
+import { headers, imageHeaders, API, token} from "./SERVICE_CONSTANTS";
 
 
 export async function storePost(form) {
+    console.log(form);
     const response = await API.post("/posts/store", form, imageHeaders);
     return response.data;
 }

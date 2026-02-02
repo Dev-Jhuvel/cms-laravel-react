@@ -1,28 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useCategoryStore from "../Stores/useCategoryStore";
 
 export default function CategoryModal({method, category, setMethod = () => {}}){
-    console.log(method);
 
+    const {storeCategory, errors} = useCategoryStore();
     const defaultForm = {name: ''};
     const [form, setForm] = useState(defaultForm);
-      
     const handleChanges = (e) =>{
-        setForm({...form, [e.target]: e.target.value} ?? '');
+        setForm({...form, [e.target.name]: e.target.value ?? ''});
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        document.getElementById("category_modal").close();
+        // document.getElementById("category_modal").close();
         const formData = new FormData;
         formData.append('name', form.name);
-        if(method === create){
+        if(method === 'create'){
             storeCategory(form);
         }else{
             updateCategory(form);
         }
-        getCategory()
+        setForm(defaultForm);
+        getCategory();
     };
 
+    useEffect(()=>{
+        if(method === 'create'){
+            setForm(defaultForm);
+        }else{
+            setForm(category);
+        }
+    },[category, method])
 
        return (
         <dialog id="category_modal" className="modal">
@@ -36,20 +44,20 @@ export default function CategoryModal({method, category, setMethod = () => {}}){
                 </form>
                 
                 <form onSubmit={handleSubmit} className="mx-auto">
-                    
                    <fieldset className="fieldset">
                         <legend className="fieldset-legend text-lg">
-                            Title
+                            Name
                         </legend>
                         <input
                             type="text"
-                            name="title"
+                            name="name"
                             disabled={method === 'view'}
-                            value={form.title}
+                            value={form.name}
                             onChange={handleChanges}
                             className="input input-secondary w-full"
                             placeholder="What kind of Post is this?"
                         />
+                        {errors && (<p className="text-red-600">{errors.name}</p>)}
                     </fieldset>
                     <hr />
                     {(method === 'create' || method === 'edit') && (

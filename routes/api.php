@@ -36,7 +36,7 @@ Route::prefix('posts')->middleware('auth:sanctum')->group(function (){
 });
 
 Route::prefix('categories')->middleware('auth:sanctum')->group(function (){
-    Route::get('/{user_id}', [CategoryController::class, 'index']);
+    Route::get('/', [CategoryController::class, 'index']);
     Route::post('/store', [CategoryController::class, 'store']);
     Route::post('/update/{post_id}', [CategoryController::class, 'update']);
     Route::delete('/delete/{post_id}', [CategoryController::class, 'destroy']);

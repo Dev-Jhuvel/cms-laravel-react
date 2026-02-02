@@ -48,7 +48,7 @@ export default function Post() {
                                         key={post.id}
                                         className="card bg-base-100 w-80 h-65 shadow-sm group"
                                         onClick={() => { 
-                                            document.getElementById( "create_post_modal").showModal();
+                                            document.getElementById("post_modal").showModal();
                                             setMethod('view');
                                             setSelectedPost(post);
                                         }}

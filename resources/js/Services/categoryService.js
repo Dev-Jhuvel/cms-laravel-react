@@ -4,6 +4,8 @@ const API = axios.create({
     baseURL: 'http://127.0.0.1:8000/api',
 });
 
+const token = localStorage.getItem('token');
+
 const headers = {
     headers: {
         Authorization: `Bearer ${token}`,
@@ -17,8 +19,13 @@ const imageHeaders = {
     },
 };
 
-
-export async function storeCategory(){
-    const response = await API.post('/categories/store', headers);
+export async function storeCategory(form){
+    const response = await API.post('/categories/store', form, headers);
     return response.data;
-}
+};
+
+
+export async function getCategory(){
+    const response = await API.get('/categories', headers);
+    return response.data;
+};
