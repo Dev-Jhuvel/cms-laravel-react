@@ -46,6 +46,7 @@ class CategoryController extends Controller
         if(!$category){
             return response()->json(['message' => 'Category not Found.'], 404);
         }
+        
         $category->update($validated);
 
         return response()->json($category, 200);
@@ -54,13 +55,14 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy($category_id)
     {
-        $category = Category::find($request->id);
-
+        $category = Category::find($category_id);
+        
         if(!$category){
             return response()->json(['message' => 'Category not Found.'], 404);
         }
+        
         $category->update([
             'active' => 0,
             'deleted' => 1,

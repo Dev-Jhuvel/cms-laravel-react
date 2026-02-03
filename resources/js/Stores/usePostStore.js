@@ -37,12 +37,7 @@ const usePostStore = create((set, get) => ({
         const setMessage = useGlobalStore.getState().setMessage;
         try {
             set({posts: null});
-            const userId = useAuthStore.getState().user.id;
-            let param = {
-                url: url,
-                id: userId,
-            };
-            const response = await ApiGetPost(param);
+            const response = await ApiGetPost(url);
             set({ posts: response.data, links: response.links });
         } catch (error) {
             setMessage({ type: "error", text: "Error in Fetching Post" });

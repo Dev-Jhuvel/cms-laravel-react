@@ -15,7 +15,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
         return Post::latest()->where([
-            'user_id' => $request->user_id,
+            'user_id' => Auth::user()->id,
             'active'=> 1,
             'deleted'=> 0,
         ])->paginate(8);
@@ -37,6 +37,7 @@ class PostController extends Controller
             'user_id'       => Auth::user()->id,
             'descriptions'  => $request->descriptions,
             'image'         => $request->image,
+            'category_id'   => $request->category_id,
         ]);
         return response()->json($post, 201);
     }
@@ -61,6 +62,7 @@ class PostController extends Controller
         $data = [
             'title'         => $request->title,
             'descriptions'  => $request->descriptions,
+            'category_id'   => $request->category_id,
         ];
 
         if(!empty($request->image)){

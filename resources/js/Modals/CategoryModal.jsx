@@ -3,7 +3,7 @@ import useCategoryStore from "../Stores/useCategoryStore";
 
 export default function CategoryModal({method, category, setMethod = () => {}}){
 
-    const {storeCategory, errors} = useCategoryStore();
+    const {getCategory, storeCategory, updateCategory, errors} = useCategoryStore();
     const defaultForm = {name: ''};
     const [form, setForm] = useState(defaultForm);
     const handleChanges = (e) =>{
@@ -12,13 +12,13 @@ export default function CategoryModal({method, category, setMethod = () => {}}){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // document.getElementById("category_modal").close();
+        document.getElementById("category_modal").close();
         const formData = new FormData;
         formData.append('name', form.name);
         if(method === 'create'){
             storeCategory(form);
         }else{
-            updateCategory(form);
+            updateCategory(form, category.id);
         }
         setForm(defaultForm);
         getCategory();
@@ -66,12 +66,6 @@ export default function CategoryModal({method, category, setMethod = () => {}}){
                         </div>
                     )}
                 </form>
-                {(method === 'view') && (
-                    <div className="modal-action mt-3">
-                        <button className="btn btn-primary" onClick={()=>setMethod('edit')}>Edit Post</button>
-                        <button className="btn btn-primary" onClick={()=>deleteCategory(category.id)}>Delete</button>
-                    </div>
-                )}
             </div>
         </dialog>
     );

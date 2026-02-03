@@ -15,6 +15,7 @@ class Post extends Model
         'user_id',
         'descriptions',
         'image',
+        'category_id',
         'active',
         'deleted',
     ];

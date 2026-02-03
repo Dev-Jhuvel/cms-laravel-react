@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import usePostStore from "../Stores/usePostStore";
 import useGlobalStore from "../Stores/useGlobalStore";
+import useCategoryStore from "../Stores/useCategoryStore";
 import { Trash } from "lucide-react";
 
 
@@ -8,6 +9,7 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
     const defaultForm = {
         title: "",
         descriptions: "",
+        category_id: "",
     };
    
 
@@ -15,6 +17,7 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
     const [form, setForm] = useState(defaultForm);
     const [imagePreview, setImagePreview] = useState("");
     const {storePost, getPost, editPost, deletePost } = usePostStore();
+    const {getCategory, categories} = useCategoryStore();
     const {setMessage} = useGlobalStore();
     const fileInputRef = useRef("");
 
@@ -43,6 +46,7 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
         const formData = new FormData();
         formData.append('title', form.title);
         formData.append('descriptions', form.descriptions);
+        formData.append('category_id', form.category_id);
         if(file) formData.append('image', file);
 
         console.log(method);
@@ -63,19 +67,24 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
 
     useEffect(() =>{
         if(method == 'create'){
-            setFile("");
             setForm(defaultForm);
+            setFile("");
             setImagePreview("");
         }else{
             setForm({
                 title: post.title ?? "",
                 descriptions: post.descriptions ?? "",
+                category_id: post.category_id ?? "",
             });
         setImagePreview(post.image ?? "");
         }
     }, [post, method]);
 
-   
+    useEffect(() => {
+        getCategory();
+    }, []);
+
+   console.log(form);
     return (
         <dialog id="post_modal" className="modal">
             <div className="modal-box">
@@ -139,6 +148,41 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
                             className="textarea textarea-secondary w-full"
                             placeholder="Describe your post...."
                         ></textarea>
+                    </fieldset>
+                    <fieldset className="fieldset">
+                        <legend className="fieldset-legend text-lg">
+                            Category
+                        </legend>
+                        <select 
+                            name="category_id" 
+                            onChange={handleChanges} 
+                            value={form.category_id || ""}
+                            disabled={method === 'view'}
+                            className="input input-secondary w-full" 
+                            placeholder="Select Category">
+                            <option value="" disabled>--Select Category--</option>
+                            {categories && categories.map((category)=>{
+                                return (
+                                    <option 
+                                        key={category.id} 
+                                        value={category.id}
+                                        selected
+                                        // selected={form.category_id === category.id}
+                                        >
+                                            {category.name}
+                                    </option>)
+                            })
+                            }
+                        </select>
+                        {/* <input
+                            type="text"
+                            name="title"
+                            disabled={method === 'view'}
+                            value={form.title}
+                            onChange={handleChanges}
+                            className="input input-secondary w-full"
+                            placeholder="Enjoy our all time favorite breads!"
+                        /> */}
                     </fieldset>
                     <hr />
                     {(method === 'create' || method === 'edit') && (

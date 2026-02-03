@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import CategoryModal from "../Modals/CategoryModal";
+import Pagination from "../Components/Pagination";
 import useCategoryStore from "../Stores/useCategoryStore";
 export default function Category() {
     const [method, setMethod] = useState("");
     const [selectedCategory, setSelectedCategory] = useState({});
-    const { categories, getCategory } = useCategoryStore();
+    const { links, categories, getCategory, deleteCategory } = useCategoryStore();
 
     useEffect(() => {
         getCategory();
@@ -49,12 +50,12 @@ export default function Category() {
                                                 <td>{category.name}</td>
                                                 <td className="text-center">0</td>
                                                 <td className="flex gap-4">
-                                                    <button className="btn btn-info" 
+                                                    {/* <button className="btn btn-info" 
                                                         onClick={()=>{
                                                         document.getElementById("category_modal").showModal();
                                                         setMethod("view");
                                                         setSelectedCategory(category);
-                                                    }}>View</button>
+                                                    }}>View</button> */}
                                                     <button className="btn btn-success" 
                                                         onClick={()=>{
                                                         document.getElementById("category_modal").showModal();
@@ -63,9 +64,8 @@ export default function Category() {
                                                     }}>Edit</button>
                                                     <button className="btn btn-error" 
                                                         onClick={()=>{
-                                                        document.getElementById("category_modal").showModal();
-                                                        setMethod("delete");
-                                                        setSelectedCategory(category);
+                                                        deleteCategory(category.id);
+                                                        getCategory();
                                                     }}>Delete</button>
                                                 </td>
                                             </tr>
@@ -74,6 +74,7 @@ export default function Category() {
                                 </tbody>
                             </table>
                         </div>
+                            <Pagination links={links} onPageChange={getCategory} />
                     </div>
                 ) : (
                     <div className="w-full h-full p-10">

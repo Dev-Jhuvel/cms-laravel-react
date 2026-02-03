@@ -1,4 +1,4 @@
-import { headers, imageHeaders, API, token} from "./SERVICE_CONSTANTS";
+import { headers, imageHeaders, API} from "./SERVICE_CONSTANTS";
 
 
 export async function storePost(form) {
@@ -7,11 +7,11 @@ export async function storePost(form) {
     return response.data;
 }
 
-export async function getPost(option = {}) {
-    let url;
-    if (option.id) url = `/posts/${option.id}`;
-    if (option.url) url = option.url;
-    const response = await API.get(url, headers);
+export async function getPost(url = "") {
+    let final_url;
+    if (url) final_url = url;
+    else final_url = '/posts';
+    const response = await API.get(final_url, headers);
     return response.data;
 }
 

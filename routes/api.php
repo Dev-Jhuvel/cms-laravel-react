@@ -29,7 +29,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 
 Route::prefix('posts')->middleware('auth:sanctum')->group(function (){
-    Route::get('/{user_id}', [PostController::class, 'index']);
+    Route::get('/', [PostController::class, 'index']);
     Route::post('/store', [PostController::class, 'store']);
     Route::post('/update/{post_id}', [PostController::class, 'update']);
     Route::delete('/delete/{post_id}', [PostController::class, 'destroy']);
@@ -38,6 +38,6 @@ Route::prefix('posts')->middleware('auth:sanctum')->group(function (){
 Route::prefix('categories')->middleware('auth:sanctum')->group(function (){
     Route::get('/', [CategoryController::class, 'index']);
     Route::post('/store', [CategoryController::class, 'store']);
-    Route::post('/update/{post_id}', [CategoryController::class, 'update']);
-    Route::delete('/delete/{post_id}', [CategoryController::class, 'destroy']);
+    Route::post('/update/{category_id}', [CategoryController::class, 'update']);
+    Route::delete('/delete/{category_id}', [CategoryController::class, 'destroy']);
 });
