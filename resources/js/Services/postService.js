@@ -2,16 +2,17 @@ import { headers, imageHeaders, API} from "./SERVICE_CONSTANTS";
 
 
 export async function storePost(form) {
-    console.log(form);
     const response = await API.post("/posts/store", form, imageHeaders);
     return response.data;
 }
 
-export async function getPost(url = "") {
+export async function getPost(url, category_id) {
     let final_url;
+    console.log(url, category_id);
     if (url) final_url = url;
     else final_url = '/posts';
-    const response = await API.get(final_url, headers);
+    const params = {category_id};
+    const response = await API.post(final_url, params, headers);
     return response.data;
 }
 

@@ -14,14 +14,14 @@ export default function RouteChecker({ children, mode }) {
 
     if(mode === "auth"){
         if(!isAuthenticated){
-            return <Navigate to="/login" />
+            return <Navigate to="/" />
         }
         return children;
     }
 
     if(mode === "guest"){
         if(isAuthenticated){
-            return <Navigate to="/" />
+            return <Navigate to="/dashboard" />
         }
         return children;
     }

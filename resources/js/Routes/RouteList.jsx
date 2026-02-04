@@ -5,15 +5,16 @@ import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import Post from "../Pages/Post";
 import Category from "../Pages/Category";
+import Dashboard from "../Pages/Dashboard";
 export default function RouteList() {
     return (
         <Routes>
             {/* AUTH */}
             <Route
-                path="/"
+                path="/dashboard"
                 element={
                     <RouteChecker mode="auth">
-                        <Home />
+                        <Dashboard />
                     </RouteChecker>
                 }
             ></Route>
@@ -34,6 +35,14 @@ export default function RouteList() {
                 }
             ></Route>
             {/* GUEST */}
+            <Route
+                path="/"
+                element={
+                    <RouteChecker mode="guest">
+                        <Home />
+                    </RouteChecker>
+                }
+            ></Route>
             <Route
                 path="/register"
                 element={

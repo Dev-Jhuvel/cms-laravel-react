@@ -1,25 +1,43 @@
-import { useEffect, useState } from "react";
+import _ from 'lodash';
+import { useCallback, useEffect, useState } from "react";
 import PostModal from "../Modals/PostModal";
 import usePostStore from "../Stores/usePostStore";
 import useThemeStore from "../Stores/useThemeStore";
 import Pagination from "../Components/Pagination";
+import useCategoryStore from "../Stores/useCategoryStore";
 
 export default function Post() {
     const { posts,  getPost, links } = usePostStore();
     const { logo } = useThemeStore();
+    const [filterCategory, setFilterCategory] = useState("");
     const [selectedPost, setSelectedPost] = useState({});
+    const {categories, getCategory} = useCategoryStore();
     const [method, setMethod] = useState('');
     // const [posts, setPost] = useState([]);
 
-    useEffect(() => {
-        // setPost(null);
-        getPost();
-    }, []);
+    // const debouncedFilter = useCallback(
+    //     _.debounce((value) => {
+    //         getPost(value);
+    //     }, 500),
+    //     [getPost],
+    // );
 
-    function truncate(text = "", length = 20) {
+    const truncate = (text = "", length = 20) => {
         if (!text) return;
         return text.length > length ? text.slice(0, length) + "...." : text;
     }
+    
+    const handleChanges = (e) =>{
+        setFilterCategory(e.target.value);
+    } 
+
+    useEffect(() => {
+        getCategory();
+    }, []);
+
+    useEffect(() => {
+        getPost(null, filterCategory);
+    }, [filterCategory]);
 
     return (
         <>
@@ -28,15 +46,43 @@ export default function Post() {
                     <h1 className="text-primary text-center text-3xl font-bold">
                         Manage Posts
                     </h1>
-                    <button
-                        className="btn btn-primary ml-5"
-                        onClick={() =>{
-                            document.getElementById("post_modal").showModal();
-                            setMethod('create');
-                        }}
-                    >
-                        Create New Post
-                    </button>
+                    <div className="w-full flex gap-5 items-center">
+                        <button
+                            className="btn btn-primary ml-5"
+                            onClick={() =>{
+                                document.getElementById("post_modal").showModal();
+                                setMethod('create');
+                            }}
+                        >
+                            Create New Post
+                        </button>
+                        <fieldset className="fieldset">
+                            {/* <legend className="fieldset-legend text-lg">
+                                Category
+                            </legend> */}
+                            <select 
+                                name="category_id" 
+                                onChange={handleChanges} 
+                                // onChange={(e)=>debouncedFilter(e.target.value)} 
+                                value={filterCategory || ""}
+                                // disabled={method === 'view'}
+                                className="input input-secondary w-full" 
+                                placeholder="Select Category">
+                                <option value="">All Categories</option>
+                                {categories && categories.map((category)=>{
+                                    return (
+                                        <option 
+                                            key={category.id} 
+                                            value={category.id}
+                                            // selected={form.category_id === category.id}
+                                            >
+                                                {category.name}
+                                        </option>)
+                                })
+                                }
+                            </select>
+                        </fieldset>
+                    </div>
                 </div>
                 <PostModal method={method} post={selectedPost} setMethod={setMethod} />
                 <div className="w-full py-5 px-10">
@@ -54,11 +100,12 @@ export default function Post() {
                                         }}
                                     >
                                         <div
-                                            className="m-3 h-full w-[90%] bg-cover bg-center rounded-xl shadow-2xl overflow-y-scroll group-hover:rounded-t-xl group-hover:w-full group-hover:m-0"
+                                            className="m-3 h-full w-[90%] bg-cover bg-center rounded-xl shadow-2xl overflow-y-scroll group-hover:rounded-t-xl group-hover:w-full group-hover:m-0 relative"
                                             style={{
                                                 backgroundImage: `url(${post.image === "" ? logo : post.image})`,
                                             }}
                                         >
+                                            <div className="text-primary text-center font-bold bg-primary-content rounded-2xl px-2 py-1 right-2 top-2 absolute">{post.category.name}</div>
                                             {/* <img
                                         src={post.image === '' ? logo : post.image}
                                         alt="Card image"
@@ -78,7 +125,7 @@ export default function Post() {
                                     </div>
                                 ))}
                             </div>
-                            <Pagination links={links} onPageChange={getPost} />
+                            <Pagination links={links} onPageChange={(url)=>getPost(url, filterCategory)} />
                         </div>
                     ) : (
                           <div className="w-full">

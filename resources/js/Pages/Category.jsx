@@ -31,7 +31,7 @@ export default function Category() {
                 </div>
                 <CategoryModal method={method} category={selectedCategory} />
                 {categories ? (
-                    <div className="w-full h-full">
+                    <div className="w-full h-full mb-auto">
                         <div className="overflow-x-auto w-[80%] m-auto">
                             <table className="table">
                                 <thead>
@@ -45,10 +45,10 @@ export default function Category() {
                                 <tbody>
                                     {categories.map((category, index) => {
                                         return (
-                                            <tr key={category.id} className="hover:bg-base-300">
+                                            <tr key={category.name} className="hover:bg-base-300">
                                                 <th className="text-center">{index + 1}</th>
                                                 <td>{category.name}</td>
-                                                <td className="text-center">0</td>
+                                                <td className="text-center">{category.posts_count}</td>
                                                 <td className="flex gap-4">
                                                     {/* <button className="btn btn-info" 
                                                         onClick={()=>{
@@ -63,6 +63,7 @@ export default function Category() {
                                                         setSelectedCategory(category);
                                                     }}>Edit</button>
                                                     <button className="btn btn-error" 
+                                                        disabled={category.posts_count > 0}
                                                         onClick={()=>{
                                                         deleteCategory(category.id);
                                                         getCategory();
@@ -74,14 +75,14 @@ export default function Category() {
                                 </tbody>
                             </table>
                         </div>
-                            <Pagination links={links} onPageChange={getCategory} />
+                            <Pagination links={links} onPageChange={()=>getCategory()} />
                     </div>
                 ) : (
                     <div className="w-full h-full p-10">
                         <div className="flex w-[90%] flex-col gap-4 m-auto">
                             <div className="skeleton h-12 w-full"></div>
-                            {Array.from({length: 8}).map((_,v) =>{
-                                return  <div className="skeleton h-10 w-full"></div>
+                            {Array.from({length: 8}).map((_,i) =>{
+                                return  <div key={i} className="skeleton h-10 w-full"></div>
                             })}
                         </div>
                     </div>

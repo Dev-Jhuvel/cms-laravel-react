@@ -29,7 +29,7 @@ export default function Sidebar() {
     const { toggleTheme, theme, logo } = useThemeStore();
 
    const pages = [
-        { text: "Dashboard", icon: ChartNetwork, url: "/", click: "" },
+        { text: "Dashboard", icon: ChartNetwork, url: "/dashboard", click: "" },
         // { text: "Settings", icon: Settings2, url: "/", click: "" },
         { text: "Posts", icon: Wallpaper, url: "/posts", click: "" },
         { text: "Categories", icon: Folders, url: "/categories", click: "" },

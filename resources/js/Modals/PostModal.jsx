@@ -49,13 +49,13 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
         formData.append('category_id', form.category_id);
         if(file) formData.append('image', file);
 
-        console.log(method);
         if(method === 'create'){
             await storePost(formData);
         }else{
             await editPost(formData, post.id);
         }
         getPost();
+        setForm(defaultForm);
     };
 
     const removeImage = () =>{
@@ -84,7 +84,6 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
         getCategory();
     }, []);
 
-   console.log(form);
     return (
         <dialog id="post_modal" className="modal">
             <div className="modal-box">
@@ -166,7 +165,6 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
                                     <option 
                                         key={category.id} 
                                         value={category.id}
-                                        selected
                                         // selected={form.category_id === category.id}
                                         >
                                             {category.name}

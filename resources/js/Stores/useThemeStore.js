@@ -8,7 +8,6 @@ const useThemeStore = create((set, get) => ({
     toggleTheme: () => {
         const currentTheme = get().theme;
         const newTheme = currentTheme === 'caramellatte' ? 'coffee' : 'caramellatte';
-        console.log(newTheme);
         get().themeSetter(newTheme);
     },
     themeSetter: (selectedTheme) => {

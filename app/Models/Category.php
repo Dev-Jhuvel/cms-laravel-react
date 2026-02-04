@@ -12,6 +12,6 @@ class Category extends Model
     protected $fillable = ['name','active', 'deleted'];
 
     public function posts(){
-        return $this->BelongsTo(Post::class);
+        return $this->hasMany(Post::class);
     }
 }

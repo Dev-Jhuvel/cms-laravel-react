@@ -23,21 +23,20 @@ const usePostStore = create((set, get) => ({
             await ApiStorePost(form);
             setMessage({ type: "success", text: "New Post Uploaded!" });
         } catch (error) {
-            console.log(error);
             setMessage({ type: "error", text: "Error in Uploading Post" });
             if (error.response) set({ errors: error.response.data.errors });
         } finally {
             setLoading(false);
         }
     },
-    getPost: async (url = "") => {
+    getPost: async (url, category_id) => {
         if (url) localStorage.setItem("currentPageUrl", url);
         const currentPageUrl = localStorage.getItem("currentPageUrl");
         if (currentPageUrl) url = currentPageUrl;
         const setMessage = useGlobalStore.getState().setMessage;
         try {
             set({posts: null});
-            const response = await ApiGetPost(url);
+            const response = await ApiGetPost(url, category_id);
             set({ posts: response.data, links: response.links });
         } catch (error) {
             setMessage({ type: "error", text: "Error in Fetching Post" });

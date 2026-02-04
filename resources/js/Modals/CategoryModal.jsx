@@ -6,6 +6,7 @@ export default function CategoryModal({method, category, setMethod = () => {}}){
     const {getCategory, storeCategory, updateCategory, errors} = useCategoryStore();
     const defaultForm = {name: ''};
     const [form, setForm] = useState(defaultForm);
+
     const handleChanges = (e) =>{
         setForm({...form, [e.target.name]: e.target.value ?? ''});
     };
@@ -52,7 +53,7 @@ export default function CategoryModal({method, category, setMethod = () => {}}){
                             type="text"
                             name="name"
                             disabled={method === 'view'}
-                            value={form.name}
+                            value={form.name || ''}
                             onChange={handleChanges}
                             className="input input-secondary w-full"
                             placeholder="What kind of Post is this?"

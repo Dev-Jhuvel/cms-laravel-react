@@ -10,6 +10,8 @@
 // npm install axios
 // npm install daisyui
 // npm install lucide-react
+// npm install lodash
+
 
 # restart 404 problem
 // Route::get('/{any}', function () {

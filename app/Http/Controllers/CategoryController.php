@@ -12,7 +12,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories =  Category::where([
+        $categories =  Category::withCount('posts')->where([
             'active' => 1,
             'deleted' => 0,
         ])->orderBy('name')->paginate(10);
@@ -25,7 +25,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate(['name' => 'required|unique:categories,name']);
+        $validated = $request->validate(['name' => 'required'
+        // |unique:categories,name
+    ]);
 
         $category = Category::create($validated);
 

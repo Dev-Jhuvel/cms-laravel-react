@@ -28,7 +28,6 @@ const useCategoryStore = create((set, get) => ({
         try {
             const response = await ApiGetCategories();
             set({categories: response.data, links: response.links})
-            setMessage({type: "success", text: "Categories Loaded."})
         } catch (error) {
             if (error.response) {
                 setMessage({ type: "error", text: "Error in fetching category." });

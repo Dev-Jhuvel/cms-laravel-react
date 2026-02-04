@@ -14,11 +14,17 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        return Post::latest()->where([
-            'user_id' => Auth::user()->id,
-            'active'=> 1,
-            'deleted'=> 0,
-        ])->paginate(8);
+        return Post::with('category')
+            ->latest()
+            ->where([
+                'user_id' => Auth::user()->id,
+                'active'=> 1,
+                'deleted'=> 0,
+            ])
+            ->when(!empty($request->category_id), function($query) use($request){
+                $query->where('category_id', $request->category_id);
+            })
+            ->paginate(8);
     }
 
 
