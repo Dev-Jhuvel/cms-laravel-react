@@ -30,3 +30,8 @@ export async function deletePost(postId) {
     const response = await API.delete(`/posts/delete/${postId}`, headers);
     return response.data;
 }
+
+export async function homePage() {
+    const response = await API.get('/');
+    return response.data;
+}

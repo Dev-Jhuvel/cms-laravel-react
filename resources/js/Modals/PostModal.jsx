@@ -11,7 +11,6 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
         descriptions: "",
         category_id: "",
     };
-   
 
     const [file, setFile] = useState("");
     const [form, setForm] = useState(defaultForm);
@@ -55,6 +54,8 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
             await editPost(formData, post.id);
         }
         getPost();
+        setImagePreview("")
+        setFile("")
         setForm(defaultForm);
     };
 

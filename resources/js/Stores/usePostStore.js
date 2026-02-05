@@ -5,6 +5,7 @@ import {
     getPage as ApiGetPage,
     editPost as ApiEditPost,
     deletePost as ApiDeletePost,
+    homePage as ApiHomePage,
 } from "../Services/postService";
 import useGlobalStore from "./useGlobalStore";
 import useAuthStore from "./useAuthStore";
@@ -73,6 +74,16 @@ const usePostStore = create((set, get) => ({
             if (error.response) set({ errors: error.response.data.errors });
         } finally {
             setLoading(false);
+        }
+    },
+
+    homePage: async () => {
+        try {
+            set({posts: null});
+            const response = await ApiHomePage();
+            set({ posts:response });
+        } catch (error) {
+            if (error.response) set({ errors: error.response.data.errors });
         }
     },
 }));

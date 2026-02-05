@@ -97,4 +97,19 @@ class PostController extends Controller
         ]);
         return response()->json([$post, 'message' => 'Post is deleted.'], 201);
     }
+
+    public function homePage()
+    {
+        return Post::with('category')
+            ->latest()
+            ->where([
+                'active'=> 1,
+                'deleted'=> 0,
+            ])
+            ->where('image', '<>', '')
+            // ->when(!empty($request->category_id), function($query) use($request){
+            //     $query->where('category_id', $request->category_id);
+            // })
+            ->get();
+    }
 }

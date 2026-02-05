@@ -34,6 +34,8 @@ Route::prefix('posts')->middleware('auth:sanctum')->group(function (){
     Route::post('/update/{post_id}', [PostController::class, 'update']);
     Route::delete('/delete/{post_id}', [PostController::class, 'destroy']);
 });
+Route::get('/', [PostController::class, 'homePage']);
+
 
 Route::prefix('categories')->middleware('auth:sanctum')->group(function (){
     Route::get('/', [CategoryController::class, 'index']);
