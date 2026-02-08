@@ -194,8 +194,9 @@ export default function PostModal({method, post = {}, setMethod = () => {}}) {
                     <div className="modal-action mt-3">
                         <button className="btn btn-primary" onClick={()=>setMethod('edit')}>Edit Post</button>
                         <button className="btn btn-primary" onClick={()=>{
-                            deletePost(post.id);
-                            getPost();
+                                document.getElementById('post_modal').close();
+                                deletePost(post.id);
+                                getPost();
                             }}>Delete</button>
                     </div>
                 )}

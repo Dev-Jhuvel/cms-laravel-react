@@ -43,16 +43,18 @@ export default function Register() {
     }, [authError, setErrors]);
 
     return (
-        <div className="bg-white flex items-center justify-center h-[95vh]">
+        <div className="bg-white flex items-center justify-center h-screen">
             <div className="bg-base-200 w-[80%] m-auto rounded-2xl flex shadow-lg max-sm:w-full max-sm:rounded-none max-sm:bg-[url('../images/breads.jpg')] bg-cover">
                 <div className="w-[40%] h-[90vh] rounded-l-2xl relative max-sm:w-full max-sm:h-screen backdrop-blur-xs">
-                    <div className="w-full h-[23%] max-sm:size-25 m-auto">
-                        <img
-                            className="size-25 max-sm:size-18 mt-3 md:ml-5 rounded-full inline-flex"
-                            src={logo}
-                            alt=""
-                        />
-                    </div>
+                    <Link to="/">
+                        <div className="w-full h-[23%] max-sm:size-25 m-auto">
+                            <img
+                                className="size-25 max-sm:size-18 mt-3 md:ml-5 rounded-full inline-flex"
+                                src={logo}
+                                alt=""
+                            />
+                        </div>
+                    </Link>
                     <div className="w-full">
                         <form
                             onSubmit={handleSubmit}

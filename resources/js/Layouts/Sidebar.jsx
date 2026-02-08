@@ -8,12 +8,15 @@ import {
     Sun,
     Wallpaper,
     Folders,
+    Croissant,
+    AlignEndVertical,
 } from "lucide-react";
 import {
     Link,
     Route,
     BrowserRouter as Router,
     Routes,
+    useLocation,
     useNavigate,
 } from "react-router-dom";
 import { useState } from "react";
@@ -24,15 +27,20 @@ import useAuthStore from "../Stores/useAuthStore";
 import useThemeStore from "../Stores/useThemeStore";
 import RouteList from "../Routes/RouteList";
 
+
 export default function Sidebar() {
     const { logout } = useAuthStore();
     const { toggleTheme, theme, logo } = useThemeStore();
+    const location = useLocation();
+    const currentRoute = location.pathname;
 
    const pages = [
         { text: "Dashboard", icon: ChartNetwork, url: "/dashboard", click: "" },
         // { text: "Settings", icon: Settings2, url: "/", click: "" },
         { text: "Posts", icon: Wallpaper, url: "/posts", click: "" },
         { text: "Categories", icon: Folders, url: "/categories", click: "" },
+        { text: "Products", icon: Croissant, url: "/categories", click: "" },
+        { text: "Product Category", icon: AlignEndVertical, url: "/categories", click: "" },
         { text: "Theme", icon: theme === 'coffee' ? Moon : Sun, url: "", click:  toggleTheme },
         { text: "Logout", icon: LogOutIcon, url: "", click: () => logout() },
     ];
@@ -66,7 +74,7 @@ export default function Sidebar() {
                     aria-label="close sidebar"
                     className="drawer-overlay"
                 ></label>
-                <div className="flex min-h-full flex-col items-start bg-base-100 is-drawer-close:w-18 is-drawer-open:w-36">
+                <div className="flex min-h-full flex-col items-start bg-base-100 is-drawer-close:w-25 is-drawer-open:w-45">
                     <div className="mt-10 flex items-center justify-center text-center w-full">
                         <p className="font-bold text-4xl w-full text-center is-drawer-close:hidden mb-5">
                             Au bon
@@ -88,10 +96,10 @@ export default function Sidebar() {
                                     {page.url ? (
                                         <Link
                                             to={page.url}
-                                            className="btn-square is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                            className={`btn-square is-drawer-close:tooltip is-drawer-close:tooltip-right ${page.url == currentRoute ? 'bg-base-200' : ''}`}
                                             data-tip={page.text}
                                         >
-                                            <PageIcon className="m-auto" />
+                                            <PageIcon className="m-auto size-8 is-drawer-open:size-7" />
                                             <span className="is-drawer-close:hidden">
                                                 {page.text}
                                             </span>
@@ -102,7 +110,7 @@ export default function Sidebar() {
                                             className="btn-square is-drawer-close:tooltip is-drawer-close:tooltip-right"
                                             data-tip={page.text}
                                         >
-                                            <PageIcon className="m-auto" />
+                                            <PageIcon className="m-auto size-8 is-drawer-open:size-7"/>
                                             <span className="is-drawer-close:hidden">
                                                 {page.text}
                                             </span>
@@ -117,7 +125,7 @@ export default function Sidebar() {
                                 aria-label="open sidebar"
                                 className="btn btn-ghost border-none "
                             >
-                                <SidebarIcon />
+                                <SidebarIcon className="m-auto size-8 is-drawer-open:size-7" />
                             </label>
                         </li>
                     </ul>

@@ -29,7 +29,7 @@ export default function Slider() {
                         <div className="mx-auto mt-auto mb-10 flex gap-4">
                         {posts.map((posts, i) => (
                             <button 
-                            className="btn btn-sm rounded-full text-7xl" 
+                            className={`btn btn-xs btn-circle text-7xl ${index === i ? 'btn-primary' : ''}`} 
                             key={posts.id} 
                             onClick={() => setIndex(i)}>
                             </button>
