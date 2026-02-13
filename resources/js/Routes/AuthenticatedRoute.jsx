@@ -5,11 +5,11 @@ import useGlobalStore from "../Stores/useGlobalStore";
 import Loading from "../Components/Loading";
 
 export default function AuthenticatedRoute({ children }) {
-    const { isAuthenticated, fetchUser } = useAuthStore();
+    const { isAuthenticated, getUser } = useAuthStore();
     const { setLoading } = useGlobalStore();
 
     useEffect(() => {
-        fetchUser()
+        getUser()
     }, []);
 
     if (!isAuthenticated) {

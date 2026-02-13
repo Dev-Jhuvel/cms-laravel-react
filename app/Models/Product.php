@@ -6,13 +6,12 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Product extends Model
 {
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'title',
-        'user_id',
+        'name',
         'descriptions',
         'image',
         'post_category_id',
@@ -20,7 +19,7 @@ class Post extends Model
         'deleted',
     ];
 
-    public function postCategory(){
-        return $this->belongsTo(PostCategory::class);
+    public function productCategory(){
+        return $this->belongsTo(ProductCategory::class);
     }
 }

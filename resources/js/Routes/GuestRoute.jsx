@@ -3,10 +3,10 @@ import useAuthStore from "../Stores/useAuthStore";
 import { useEffect } from "react";
 
 export default function GuestRoute({ children }) {
-    const { isAuthenticated, fetchUser } = useAuthStore();
+    const { isAuthenticated, getUser } = useAuthStore();
 
     useEffect(() => {
-        fetchUser();
+        getUser();
     }, []);
 
     if (isAuthenticated) {

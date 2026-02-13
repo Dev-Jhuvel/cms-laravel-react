@@ -5,11 +5,11 @@ import useGlobalStore from "../Stores/useGlobalStore";
 import Loading from "../Components/Loading";
 
 export default function RouteChecker({ children, mode }) {
-    const { isAuthenticated, fetchUser } = useAuthStore();
+    const { isAuthenticated, getUser } = useAuthStore();
    
 
     useEffect(() => {
-        fetchUser();
+        getUser();
     }, []);
 
     if(mode === "auth"){

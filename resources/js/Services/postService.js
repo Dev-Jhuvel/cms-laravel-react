@@ -1,37 +1,37 @@
 import { headers, imageHeaders, API} from "./SERVICE_CONSTANTS";
 
 
-export async function storePost(form) {
+export async function ApiStorePost(form) {
     const response = await API.post("/posts/store", form, imageHeaders);
     return response.data;
 }
 
-export async function getPost(url, category_id) {
+export async function ApiGetPost(url, categoryId) {
     let final_url;
-    console.log(url, category_id);
+    console.log(url, categoryId);
     if (url) final_url = url;
     else final_url = '/posts';
-    const params = {category_id};
+    const params = {categoryId};
     const response = await API.post(final_url, params, headers);
     return response.data;
 }
 
-export async function getPage(url) {
+export async function ApiGetPage(url) {
     const response = await API.get(url, headers);
     return response.data;
 }
 
-export async function editPost(form, postId) {
+export async function ApiEditPost(form, postId) {
     const response = await API.post(`/posts/update/${postId}`, form, imageHeaders);
     return response.data;
 }
 
-export async function deletePost(postId) {
+export async function ApiDeletePost(postId) {
     const response = await API.delete(`/posts/delete/${postId}`, headers);
     return response.data;
 }
 
-export async function homePage() {
+export async function ApiHomePage() {
     const response = await API.get('/');
     return response.data;
 }

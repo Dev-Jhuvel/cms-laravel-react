@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react";
-import CategoryModal from "../Modals/CategoryModal";
+import PostCategoryModal from "../Modals/PostCategoryModal";
 import Pagination from "../Components/Pagination";
-import useCategoryStore from "../Stores/useCategoryStore";
+import usePostCategoryStore from "../Stores/usePostCategoryStore";
 export default function Category() {
     const [method, setMethod] = useState("");
     const [selectedCategory, setSelectedCategory] = useState({});
-    const { links, categories, getCategory, deleteCategory } = useCategoryStore();
+    const { links, postCategories, getPostCategory, deletePostCategory } = usePostCategoryStore();
 
     useEffect(() => {
-        getCategory();
+        getPostCategory();
     }, []);
     return (
         <>
             <div className="w-full bg-base-200 h-full border-red-500">
                 <div className="px-2 pt-10">
                     <h1 className="text-primary text-center text-3xl font-bold">
-                        Manage Categories
+                        Manage Post Categories
                     </h1>
                     <button
                         className="btn btn-primary ml-5"
                         onClick={() => {
                             document
-                                .getElementById("category_modal")
+                                .getElementById("post_category_modal")
                                 .showModal();
                             setMethod("create");
                         }}
@@ -29,8 +29,8 @@ export default function Category() {
                         Create New Category
                     </button>
                 </div>
-                <CategoryModal method={method} category={selectedCategory} />
-                {categories ? (
+                <PostCategoryModal method={method} category={selectedCategory} />
+                {postCategories ? (
                     <div className="w-full h-full mb-auto">
                         <div className="overflow-x-auto w-[80%] m-auto">
                             <table className="table">
@@ -43,7 +43,7 @@ export default function Category() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {categories.map((category, index) => {
+                                    {postCategories.map((category, index) => {
                                         return (
                                             <tr key={category.name} className="hover:bg-base-300">
                                                 <th className="text-center">{index + 1}</th>
@@ -58,15 +58,15 @@ export default function Category() {
                                                     }}>View</button> */}
                                                     <button className="btn btn-success" 
                                                         onClick={()=>{
-                                                        document.getElementById("category_modal").showModal();
+                                                        document.getElementById("post_category_modal").showModal();
                                                         setMethod("edit");
                                                         setSelectedCategory(category);
                                                     }}>Edit</button>
                                                     <button className="btn btn-error" 
                                                         disabled={category.posts_count > 0}
                                                         onClick={()=>{
-                                                        deleteCategory(category.id);
-                                                        getCategory();
+                                                        deletePostCategory(category.id);
+                                                        getPostCategory();
                                                     }}>Delete</button>
                                                 </td>
                                             </tr>

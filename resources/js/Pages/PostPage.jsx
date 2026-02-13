@@ -1,18 +1,18 @@
-import _ from 'lodash';
+import _ from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import PostModal from "../Modals/PostModal";
 import usePostStore from "../Stores/usePostStore";
 import useThemeStore from "../Stores/useThemeStore";
 import Pagination from "../Components/Pagination";
-import useCategoryStore from "../Stores/useCategoryStore";
+import usePostCategoryStore from "../Stores/usePostCategoryStore";
 
 export default function Post() {
-    const { posts,  getPost, links } = usePostStore();
+    const { posts, getPost, links } = usePostStore();
     const { logo } = useThemeStore();
-    const [filterCategory, setFilterCategory] = useState("");
+    const [filterPostCategory, setFilterPostCategory] = useState("");
     const [selectedPost, setSelectedPost] = useState({});
-    const {categories, getCategory} = useCategoryStore();
-    const [method, setMethod] = useState('');
+    const {postCategories, getPostCategory } = usePostCategoryStore();
+    const [method, setMethod] = useState("");
     // const [posts, setPost] = useState([]);
 
     // const debouncedFilter = useCallback(
@@ -25,19 +25,19 @@ export default function Post() {
     const truncate = (text = "", length = 20) => {
         if (!text) return;
         return text.length > length ? text.slice(0, length) + "...." : text;
-    }
-    
-    const handleChanges = (e) =>{
-        setFilterCategory(e.target.value);
-    } 
+    };
+
+    const handleChanges = (e) => {
+        setFilterPostCategory(e.target.value);
+    };
 
     useEffect(() => {
-        getCategory();
+        getPostCategory();
     }, []);
 
     useEffect(() => {
-        getPost(null, filterCategory);
-    }, [filterCategory]);
+        getPost(null, filterPostCategory);
+    }, [filterPostCategory]);
 
     return (
         <>
@@ -49,9 +49,11 @@ export default function Post() {
                     <div className="w-full flex gap-5 items-center">
                         <button
                             className="btn btn-primary ml-5"
-                            onClick={() =>{
-                                document.getElementById("post_modal").showModal();
-                                setMethod('create');
+                            onClick={() => {
+                                document
+                                    .getElementById("post_modal")
+                                    .showModal();
+                                setMethod("create");
                             }}
                         >
                             Create New Post
@@ -60,31 +62,36 @@ export default function Post() {
                             {/* <legend className="fieldset-legend text-lg">
                                 Category
                             </legend> */}
-                            <select 
-                                name="category_id" 
-                                onChange={handleChanges} 
-                                // onChange={(e)=>debouncedFilter(e.target.value)} 
-                                value={filterCategory || ""}
+                            <select
+                                name="postCategoryId"
+                                onChange={handleChanges}
+                                // onChange={(e)=>debouncedFilter(e.target.value)}
+                                value={filterPostCategory || ""}
                                 // disabled={method === 'view'}
-                                className="input input-secondary w-full" 
-                                placeholder="Select Category">
+                                className="input input-secondary w-full"
+                                placeholder="Select Category"
+                            >
                                 <option value="">All Categories</option>
-                                {categories && categories.map((category)=>{
-                                    return (
-                                        <option 
-                                            key={category.id} 
-                                            value={category.id}
-                                            // selected={form.category_id === category.id}
+                                {postCategories &&
+                                    postCategories.map((category) => {
+                                        return (
+                                            <option
+                                                key={category.id}
+                                                value={category.id}
                                             >
                                                 {category.name}
-                                        </option>)
-                                })
-                                }
+                                            </option>
+                                        );
+                                    })}
                             </select>
                         </fieldset>
                     </div>
                 </div>
-                <PostModal method={method} post={selectedPost} setMethod={setMethod} />
+                <PostModal
+                    method={method}
+                    post={selectedPost}
+                    setMethod={setMethod}
+                />
                 <div className="w-full py-5 px-10">
                     {posts ? (
                         <div className="w-full">
@@ -93,9 +100,11 @@ export default function Post() {
                                     <div
                                         key={post.id}
                                         className="card bg-base-100 w-80 h-65 shadow-sm group"
-                                        onClick={() => { 
-                                            document.getElementById("post_modal").showModal();
-                                            setMethod('view');
+                                        onClick={() => {
+                                            document
+                                                .getElementById("post_modal")
+                                                .showModal();
+                                            setMethod("view");
                                             setSelectedPost(post);
                                         }}
                                     >
@@ -105,7 +114,9 @@ export default function Post() {
                                                 backgroundImage: `url(${post.image === "" ? logo : post.image})`,
                                             }}
                                         >
-                                            <div className="text-primary text-center font-bold bg-primary-content rounded-2xl px-2 py-1 right-2 top-2 absolute">{post.category.name}</div>
+                                            <div className="text-primary text-center font-bold bg-primary-content rounded-2xl px-2 py-1 right-2 top-2 absolute">
+                                                {post.post_category.name}
+                                            </div>
                                             {/* <img
                                         src={post.image === '' ? logo : post.image}
                                         alt="Card image"
@@ -125,27 +136,30 @@ export default function Post() {
                                     </div>
                                 ))}
                             </div>
-                            <Pagination links={links} onPageChange={(url)=>getPost(url, filterCategory)} />
+                            <Pagination
+                                links={links}
+                                onPageChange={(url) =>
+                                    getPost(url, filterPostCategory)
+                                }
+                            />
                         </div>
                     ) : (
-                          <div className="w-full">
+                        <div className="w-full">
                             <div className="flex flex-wrap justify-center gap-2 h-[72vh]">
-                               {Array.from({length: 8}).map((v,i) =>{
+                                {Array.from({ length: 8 }).map((v, i) => {
                                     return (
-                                    <div
-                                        key={i}
-                                        className="card bg-base-100 w-80 h-60 shadow-sm group"
-                                       
-                                    >
-                                        <div className="skeleton m-3 h-full w-[90%] bg-base-300 rounded-xl overflow-y-scroll">
+                                        <div
+                                            key={i}
+                                            className="card bg-base-100 w-80 h-60 shadow-sm group"
+                                        >
+                                            <div className="skeleton m-3 h-full w-[90%] bg-base-300 rounded-xl overflow-y-scroll"></div>
+                                            <div className="w-full">
+                                                <div className="skeleton w-[90%] bg-base-300 h-4 mx-auto"></div>
+                                                <div className="skeleton w-[90%] bg-base-300 h-4 mx-auto my-3"></div>
+                                            </div>
                                         </div>
-                                        <div className="w-full">
-                                           <div className="skeleton w-[90%] bg-base-300 h-4 mx-auto"></div>
-                                           <div className="skeleton w-[90%] bg-base-300 h-4 mx-auto my-3"></div>
-                                        </div>
-                                    </div>
-                                    )
-                               })}
+                                    );
+                                })}
                             </div>
                         </div>
                     )}

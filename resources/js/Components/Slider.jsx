@@ -11,12 +11,11 @@ export default function Slider() {
         }, 3000);
         return () => clearInterval(timer);
        }
-    }, []);
+    }, [posts]);
 
     useEffect(() => {
         homePage();
     }, [homePage]);
-    console.log(posts)
     return (
         <>
         <h1></h1>

@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import {
-    login as apiLogin,
-    logout as apiLogout,
-    register as apiRegister,
-    getUser,
+    ApiLogin,
+    ApiLogout,
+    ApiRegister,
+    ApiGetUser,
 } from "../Services/authService";
 import useGlobalStore from "./useGlobalStore";
 import { persist } from "zustand/middleware";
@@ -19,7 +19,7 @@ const useAuthStore = create(
             set({ errors: null });
             const setMessage = useGlobalStore.getState().setMessage;
             try {
-                const { token, user } = await apiLogin(credentials);
+                const { token, user } = await ApiLogin(credentials);
                 set({ user, token, isAuthenticated: true, errors: null });
                 localStorage.setItem("token", token);
                 setMessage({ type: "success", text: "Login Successfully!" });
@@ -36,7 +36,7 @@ const useAuthStore = create(
             const setMessage = useGlobalStore.getState().setMessage;
             set({ errors: null });
             try {
-                const { token, user } = await apiRegister(form);
+                const { token, user } = await ApiRegister(form);
                 set({ user, token, isAuthenticated: true, errors: null });
                 setMessage({
                     type: "success",
@@ -51,13 +51,13 @@ const useAuthStore = create(
             }
         },
 
-        fetchUser: async () => {
+        getUser: async () => {
             const token = localStorage.getItem("token");
             const setLoading = useGlobalStore.getState().setLoading;
             if (!token) return;
             try {
                 setLoading(true);
-                const user = await getUser(token);
+                const user = await ApiGetUser(token);
                 set({ user, token, isAuthenticated: true });
             } catch (error) {
                 set({ user: null, token: null, isAuthenticated: false });
@@ -70,7 +70,7 @@ const useAuthStore = create(
             const setMessage = useGlobalStore.getState().setMessage;
             const token = localStorage.getItem("token");
             if (token) {
-                apiLogout(token);
+                ApiLogout(token);
                 localStorage.removeItem("token");
                 setMessage({ type: "success", text: "Logout Successfully!" });
                 set({ user: null, token: null, isAuthenticated: false });

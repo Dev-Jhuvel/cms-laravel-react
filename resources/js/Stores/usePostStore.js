@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import {
-    storePost as ApiStorePost,
-    getPost as ApiGetPost,
-    getPage as ApiGetPage,
-    editPost as ApiEditPost,
-    deletePost as ApiDeletePost,
-    homePage as ApiHomePage,
+    ApiStorePost,
+    ApiGetPost,
+    ApiGetPage,
+    ApiEditPost,
+    ApiDeletePost,
+    ApiHomePage,
 } from "../Services/postService";
 import useGlobalStore from "./useGlobalStore";
 import useAuthStore from "./useAuthStore";
@@ -30,14 +30,14 @@ const usePostStore = create((set, get) => ({
             setLoading(false);
         }
     },
-    getPost: async (url, category_id) => {
+    getPost: async (url, categoryId) => {
         if (url) localStorage.setItem("currentPageUrl", url);
         const currentPageUrl = localStorage.getItem("currentPageUrl");
         if (currentPageUrl) url = currentPageUrl;
         const setMessage = useGlobalStore.getState().setMessage;
         try {
             set({posts: null});
-            const response = await ApiGetPost(url, category_id);
+            const response = await ApiGetPost(url, categoryId);
             set({ posts: response.data, links: response.links });
         } catch (error) {
             setMessage({ type: "error", text: "Error in Fetching Post" });

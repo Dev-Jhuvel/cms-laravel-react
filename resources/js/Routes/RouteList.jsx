@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import RouteChecker from "./RouteChecker";
-import Home from "../Pages/Home";
-import Login from "../Pages/Login";
-import Register from "../Pages/Register";
-import Post from "../Pages/Post";
-import Category from "../Pages/Category";
-import Dashboard from "../Pages/Dashboard";
+import HomePage from "../Pages/HomePage";
+import LoginPage from "../Pages/LoginPage";
+import RegisterPage from "../Pages/RegisterPage";
+import PostPage from "../Pages/PostPage";
+import PostCategoryPage from "../Pages/PostCategoryPage";
+import DashboardPage from "../Pages/DashboardPage";
 export default function RouteList() {
     return (
         <Routes>
@@ -14,7 +14,7 @@ export default function RouteList() {
                 path="/dashboard"
                 element={
                     <RouteChecker mode="auth">
-                        <Dashboard />
+                        <DashboardPage />
                     </RouteChecker>
                 }
             ></Route>
@@ -22,15 +22,15 @@ export default function RouteList() {
                 path="/posts"
                 element={
                     <RouteChecker mode="auth">
-                        <Post />
+                        <PostPage />
                     </RouteChecker>
                 }
             ></Route>
             <Route
-                path="/categories"
+                path="/post_categories"
                 element={
                     <RouteChecker mode="auth">
-                        <Category />
+                        <PostCategoryPage />
                     </RouteChecker>
                 }
             ></Route>
@@ -39,7 +39,7 @@ export default function RouteList() {
                 path="/"
                 element={
                     <RouteChecker mode="guest">
-                        <Home />
+                        <HomePage />
                     </RouteChecker>
                 }
             ></Route>
@@ -47,7 +47,7 @@ export default function RouteList() {
                 path="/register"
                 element={
                     <RouteChecker mode="guest">
-                        <Register />
+                        <RegisterPage />
                     </RouteChecker>
                 }
             ></Route>
@@ -55,7 +55,7 @@ export default function RouteList() {
                 path="/login"
                 element={
                     <RouteChecker mode="guest">
-                        <Login />
+                        <LoginPage />
                     </RouteChecker>
                 }
             ></Route>

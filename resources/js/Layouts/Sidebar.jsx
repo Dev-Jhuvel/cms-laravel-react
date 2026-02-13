@@ -38,9 +38,9 @@ export default function Sidebar() {
         { text: "Dashboard", icon: ChartNetwork, url: "/dashboard", click: "" },
         // { text: "Settings", icon: Settings2, url: "/", click: "" },
         { text: "Posts", icon: Wallpaper, url: "/posts", click: "" },
-        { text: "Categories", icon: Folders, url: "/categories", click: "" },
-        { text: "Products", icon: Croissant, url: "/categories", click: "" },
-        { text: "Product Category", icon: AlignEndVertical, url: "/categories", click: "" },
+        { text: "Post Categories", icon: Folders, url: "/post_categories", click: "" },
+        { text: "Products", icon: Croissant, url: "/products", click: "" },
+        { text: "Product Category", icon: AlignEndVertical, url: "/product_categories", click: "" },
         { text: "Theme", icon: theme === 'coffee' ? Moon : Sun, url: "", click:  toggleTheme },
         { text: "Logout", icon: LogOutIcon, url: "", click: () => logout() },
     ];

@@ -1,17 +1,22 @@
 import { create } from "zustand";
 import useGlobalStore from "./useGlobalStore";
-import { storeCategory as ApiStoreCategory, getCategory as ApiGetCategories, updateCategory as ApiUpdateCategory, deleteCategory as ApiDeleteCategory} from "../Services/categoryService"
+import {
+    ApiStorePostCategory,
+    ApiGetPostCategory,
+    ApiUpdatePostCategory,
+    ApiDeletePostCategory,
+} from "../Services/postCategoryService";
 
-const useCategoryStore = create((set, get) => ({
-    categories: null,
+const usePostCategoryStore = create((set, get) => ({
+    postCategories: null,
     errors: null,
     links: null,
-    storeCategory: async (form) =>{
+    storePostCategory: async (form) =>{
         const setLoading = useGlobalStore.getState().setLoading;
         const setMessage = useGlobalStore.getState().setMessage;
         setLoading(true);
         try {
-            await ApiStoreCategory(form);
+            await ApiStorePostCategory(form);
             setMessage({type: "success", text: "New category added."})
             set({errors: null});
         } catch (error) {
@@ -23,11 +28,11 @@ const useCategoryStore = create((set, get) => ({
             setLoading(false);
         }
     },
-    getCategory: async () =>{
+    getPostCategory: async () =>{
         const setMessage = useGlobalStore.getState().setMessage;
         try {
-            const response = await ApiGetCategories();
-            set({categories: response.data, links: response.links})
+            const response = await ApiGetPostCategory();
+            set({postCategories: response.data, links: response.links})
         } catch (error) {
             if (error.response) {
                 setMessage({ type: "error", text: "Error in fetching category." });
@@ -35,12 +40,12 @@ const useCategoryStore = create((set, get) => ({
             }
         }
     },
-    updateCategory: async (form, categoryId) =>{
+    updatePostCategory: async (form, postCategoryId) =>{
         const setMessage = useGlobalStore.getState().setMessage;
         const setLoading = useGlobalStore.getState().setLoading;
         setLoading(true);
         try {
-            await ApiUpdateCategory(form, categoryId);
+            await ApiUpdatePostCategory(form, postCategoryId);
             setMessage({type: success, text: 'Category Updated.'});
         } catch (error) {
             if(error.response){
@@ -52,22 +57,22 @@ const useCategoryStore = create((set, get) => ({
         }
     },
 
-    deleteCategory: async (categoryId) =>{
+    deletePostCategory: async (postCategoryId) =>{
         const setMessage = useGlobalStore.getState().setMessage;
         const setLoading = useGlobalStore.getState().setLoading;
         setLoading(true)
         try {
-            await ApiDeleteCategory(categoryId)
-            setMessage({type: success, text: 'Category Deleted.'})
+            await ApiDeletePostCategory(postCategoryId)
+            setMessage({type: 'success', text: 'Category Deleted.'})
         } catch (error) {
-            setMessage({type: error, text: 'Error in Deleting Category.'});
+            setMessage({type: 'error', text: 'Error in Deleting Category.'});
             if(error.response){
                 set({errors: error.response.data.errors});
             }
         }finally{
-            setLoading(true);
+            setLoading(false);
         }
     }
 }));
 
-export default useCategoryStore;
+export default usePostCategoryStore;

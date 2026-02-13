@@ -2,27 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Product;
 use App\Services\UploadService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class PostController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        return Post::with('postCategory')
+        return Product::with('productCategory')
             ->latest()
             ->where([
-                'user_id' => Auth::user()->id,
                 'active'=> 1,
                 'deleted'=> 0,
             ])
-            ->when(!empty($request->post_category_id), function($query) use($request){
-                $query->where('post_category_id', $request->post_category_id);
+            ->when(!empty($request->product_category_id), function($query) use($request){
+                $query->where('product_category_id', $request->product_category_id);
             })
             ->paginate(8);
     }
@@ -38,14 +36,13 @@ class PostController extends Controller
             // return response()->json($url_data, 400);
         }
         $request->image = $url_data['url'] ?? '';
-        $post = Post::create([
+        $product = Product::create([
             'title'             => $request->title,
-            'user_id'           => Auth::user()->id,
             'descriptions'      => $request->descriptions,
             'image'             => $request->image,
-            'post_category_id'  => $request->post_category_id,
+            'product_category_id'  => $request->product_category_id,
         ]);
-        return response()->json($post, 201);
+        return response()->json($product, 201);
     }
 
 
@@ -54,10 +51,10 @@ class PostController extends Controller
      */
     public function update(Request $request, UploadService $service)
     {
-        $post = Post::find($request->post_id);
+        $product = Product::find($request->product_id);
 
-        if(!$post){
-            return response()->json(['message' => 'Post not Found.'], 404);
+        if(!$product){
+            return response()->json(['message' => 'Product not Found.'], 404);
         }
         
         $url_data = $service->upload($request);
@@ -66,41 +63,41 @@ class PostController extends Controller
         }
         $request->image = $url_data['url'] ?? '';
         $data = [
-            'title'             => $request->title,
-            'descriptions'      => $request->descriptions,
-            'post_category_id'  => $request->post_category_id,
+            'title'                 => $request->title,
+            'descriptions'          => $request->descriptions,
+            'product_category_id'   => $request->product_category_id,
         ];
 
         if(!empty($request->image)){
             $data['image'] = $request->image;
         }
 
-        $post->update($data);
+        $product->update($data);
         
-        return response()->json($post, 201);
+        return response()->json($product, 201);
     }
 
     /**
      * Set it as deleted a  specified resource from storage.
      */
-    public function destroy($post_id)
+    public function destroy($product_id)
     {
-        $post = Post::find($post_id);
+        $product = Product::find($product_id);
         
-        if(!$post){
-            return response()->json(['message' => 'Post not Found.'], 404);
+        if(!$product){
+            return response()->json(['message' => 'Product not Found.'], 404);
         }
 
-        $post->update([
+        $product->update([
             'active' => 0,
             'deleted' => 1,
         ]);
-        return response()->json([$post, 'message' => 'Post is deleted.'], 201);
+        return response()->json([$product, 'message' => 'Product is deleted.'], 201);
     }
 
     public function homePage()
     {
-        return Post::with('postCategory')
+        return Product::with('productCategory')
             ->latest()
             ->where([
                 'active'=> 1,

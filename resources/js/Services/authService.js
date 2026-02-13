@@ -4,17 +4,17 @@ const API = axios.create({
     baseURL: 'http://127.0.0.1:8000/api',
 });
 
-export async function login(credentials){
+export async function ApiLogin(credentials){
     const response = await API.post("/login", credentials);
     return response.data;
 }
 
-export async function register(form){
+export async function ApiRegister(form){
     const response = await API.post("/register", form)
     return response.data;
 }
 
-export async function getUser(token){
+export async function ApiGetUser(token){
     const response = await API.get("/user",{
         headers: {
             Authorization: `Bearer ${token}`
@@ -23,7 +23,7 @@ export async function getUser(token){
     return response.data;
 }
 
-export async function logout(token){
+export async function ApiLogout(token){
     await API.post("/logout", null, {
         headers: {
             Authorization: `Bearer ${token}`

@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostCategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UploadController;
 use App\Models\Post;
+use App\Models\Product;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,9 +39,25 @@ Route::prefix('posts')->middleware('auth:sanctum')->group(function (){
 Route::get('/', [PostController::class, 'homePage']);
 
 
-Route::prefix('categories')->middleware('auth:sanctum')->group(function (){
-    Route::get('/', [CategoryController::class, 'index']);
-    Route::post('/store', [CategoryController::class, 'store']);
-    Route::post('/update/{category_id}', [CategoryController::class, 'update']);
-    Route::delete('/delete/{category_id}', [CategoryController::class, 'destroy']);
+Route::prefix('post_categories')->middleware('auth:sanctum')->group(function (){
+    Route::get('/', [PostCategoryController::class, 'index']);
+    Route::post('/store', [PostCategoryController::class, 'store']);
+    Route::post('/update/{post_category_id}', [PostCategoryController::class, 'update']);
+    Route::delete('/delete/{post_category_id}', [PostCategoryController::class, 'destroy']);
+});
+
+Route::prefix('product')->middleware('auth:sanctum')->group(function (){
+    Route::post('/', [Product::class, 'index']);
+    Route::post('/store', [Product::class, 'store']);
+    Route::post('/update/{product_id}', [Product::class, 'update']);
+    Route::delete('/delete/{product_id}', [PostController::class, 'destroy']);
+});
+Route::get('/', [PostController::class, 'homePage']);
+
+
+Route::prefix('product_categories')->middleware('auth:sanctum')->group(function (){
+    Route::get('/', [ProductCategory::class, 'index']);
+    Route::post('/store', [ProductCategory::class, 'store']);
+    Route::post('/update/{product_category_id}', [ProductCategory::class, 'update']);
+    Route::delete('/delete/{product_category_id}', [ProductCategory::class, 'destroy']);
 });
