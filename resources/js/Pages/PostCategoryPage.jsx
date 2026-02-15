@@ -12,7 +12,7 @@ export default function Category() {
     }, []);
     return (
         <>
-            <div className="w-full bg-base-200 h-full border-red-500">
+            <div className="w-full bg-base-200 h-ful">
                 <div className="px-2 pt-10">
                     <h1 className="text-primary text-center text-3xl font-bold">
                         Manage Post Categories
@@ -29,10 +29,11 @@ export default function Category() {
                         Create New Category
                     </button>
                 </div>
-                <PostCategoryModal method={method} category={selectedCategory} />
-                {postCategories ? (
-                    <div className="w-full h-full mb-auto">
-                        <div className="overflow-x-auto w-[80%] m-auto">
+                <PostCategoryModal method={method} category={selectedCategory} setMethod={setMethod} />
+                <div className="w-full py-5 px-10">
+                    {postCategories ? (
+                    <div className="w-full">
+                        <div className="overflow-x-auto w-[80%] h-[72vh] m-auto">
                             <table className="table">
                                 <thead>
                                     <tr>
@@ -87,6 +88,7 @@ export default function Category() {
                         </div>
                     </div>
                 )}
+                </div>
             </div>
         </>
     );

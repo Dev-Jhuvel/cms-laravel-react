@@ -1,12 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\PostCategoryController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\UploadController;
-use App\Models\Post;
-use App\Models\Product;
-use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,18 +45,18 @@ Route::prefix('post_categories')->middleware('auth:sanctum')->group(function (){
     Route::delete('/delete/{post_category_id}', [PostCategoryController::class, 'destroy']);
 });
 
-Route::prefix('product')->middleware('auth:sanctum')->group(function (){
-    Route::post('/', [Product::class, 'index']);
-    Route::post('/store', [Product::class, 'store']);
-    Route::post('/update/{product_id}', [Product::class, 'update']);
-    Route::delete('/delete/{product_id}', [PostController::class, 'destroy']);
+Route::prefix('products')->middleware('auth:sanctum')->group(function (){
+    Route::post('/', [ProductController::class, 'index']);
+    Route::post('/store', [ProductController::class, 'store']);
+    Route::post('/update/{product_id}', [ProductController::class, 'update']);
+    Route::delete('/delete/{product_id}', [ProductController::class, 'destroy']);
 });
-Route::get('/', [PostController::class, 'homePage']);
-
 
 Route::prefix('product_categories')->middleware('auth:sanctum')->group(function (){
-    Route::get('/', [ProductCategory::class, 'index']);
-    Route::post('/store', [ProductCategory::class, 'store']);
-    Route::post('/update/{product_category_id}', [ProductCategory::class, 'update']);
-    Route::delete('/delete/{product_category_id}', [ProductCategory::class, 'destroy']);
+    Route::get('/', [ProductCategoryController::class, 'index']);
+    Route::post('/store', [ProductCategoryController::class, 'store']);
+    Route::post('/update/{product_category_id}', [ProductCategoryController::class, 'update']);
+    Route::delete('/delete/{product_category_id}', [ProductCategoryController::class, 'destroy']);
 });
+
+Route::get('/', [HomepageController::class, 'index']);

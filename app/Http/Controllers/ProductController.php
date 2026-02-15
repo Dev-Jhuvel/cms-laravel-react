@@ -35,12 +35,12 @@ class ProductController extends Controller
         if(isset($url_data['error'])){
             // return response()->json($url_data, 400);
         }
-        $request->image = $url_data['url'] ?? '';
+        
         $product = Product::create([
-            'title'             => $request->title,
-            'descriptions'      => $request->descriptions,
-            'image'             => $request->image,
-            'product_category_id'  => $request->product_category_id,
+            'name'                 => $request->name,
+            'descriptions'          => $request->descriptions,
+            'image'                 => $url_data['url'] ?? '',
+            'product_category_id'   => $request->product_category_id,
         ]);
         return response()->json($product, 201);
     }
@@ -63,7 +63,7 @@ class ProductController extends Controller
         }
         $request->image = $url_data['url'] ?? '';
         $data = [
-            'title'                 => $request->title,
+            'name'                 => $request->name,
             'descriptions'          => $request->descriptions,
             'product_category_id'   => $request->product_category_id,
         ];

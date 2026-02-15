@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductCategory;
+use App\Services\UploadService;
 use Illuminate\Http\Request;
 
-class PostCategoryController extends Controller
+class ProductCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $product_categories =  ProductCategory::withCount('posts')->where([
+        $product_categories =  ProductCategory::withCount('products')->where([
             'active' => 1,
             'deleted' => 0,
         ])->orderBy('name')->paginate(10);
@@ -23,13 +24,17 @@ class PostCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, UploadService $uploadService)
     {
-        $validated = $request->validate(['name' => 'required'
-        // |unique:categories,name
-    ]);
+        $url_data = $uploadService->upload($request);
+        if(isset($url_data['error'])){
+            // return response()->json($url_data, 400);
+        }
 
-        $product_categories = ProductCategory::create($validated);
+        $product_categories = ProductCategory::create([
+            'name' => $request->name,
+            'image' => $url_data['url'] ?? '',
+        ]);
 
         return response()->json($product_categories, 200);
 

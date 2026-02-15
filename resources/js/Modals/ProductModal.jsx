@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import usePostStore from "../Stores/usePostStore";
+import useProductStore from "../Stores/useProductStore";
 import useGlobalStore from "../Stores/useGlobalStore";
-import usePostCategoryStore from "../Stores/usePostCategoryStore";
+import useProductCategoryStore from "../Stores/useProductCategoryStore";
 import { Trash } from "lucide-react";
 
-export default function PostModal({ method, post = null, setMethod = () => {} }) {
+export default function ProductModal({ method, product = null, setMethod = () => {} }) {
     const defaultForm = {
-        title: "",
+        name: "",
         descriptions: "",
-        postCategoryId: "",
+        productCategoryId: "",
     };
 
     const [file, setFile] = useState("");
     const [form, setForm] = useState(defaultForm);
     const [imagePreview, setImagePreview] = useState("");
-    const { storePost, getPost, editPost, deletePost } = usePostStore();
-    const { getPostCategory, postCategories } = usePostCategoryStore();
+    const { storeProduct, getProduct, editProduct, deleteProduct } = useProductStore();
+    const { getProductCategory, productCategories } = useProductCategoryStore();
     const { setMessage } = useGlobalStore();
     const fileInputRef = useRef("");
 
@@ -41,23 +41,24 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(form.postCategoryId === ''){
-           return setMessage({type: 'error', text: 'Select Post Category!'});
+        if(form.productCategoryId === ''){
+            return setMessage({type: 'error', text: 'Select Product Category!'});
         }
 
-        document.getElementById("post_modal").close();
+        document.getElementById("product_modal").close();
 
         const formData = new FormData();
-        formData.append("title", form.title);
+        formData.append("name", form.name);
         formData.append("descriptions", form.descriptions);
-        formData.append("post_category_id", form.postCategoryId);
+        formData.append("product_category_id", form.productCategoryId);
         if (file) formData.append("image", file);
+
         if (method === "create") {
-            await storePost(formData);
+            await storeProduct(formData);
         } else {
-            await editPost(formData, post.id);
+            await editProduct(formData, product.id);
         }
-        getPost();
+        getProduct();
         removeImage();
         setForm(defaultForm);
     };
@@ -71,7 +72,7 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
     };
 
     const closeModal = () => {
-        document.getElementById("post_modal").close();
+        document.getElementById("product_modal").close();
         setForm(defaultForm);
         removeImage();
     };
@@ -82,23 +83,23 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
             setFile("");
             setImagePreview("");
         } else {
-            if(post){
+            if(product){
                 setForm({
-                    title: post.title ?? "",
-                    descriptions: post.descriptions ?? "",
-                    postCategoryId: post.post_category_id ?? "",
+                    name: product.name ?? "",
+                    descriptions: product.descriptions ?? "",
+                    productCategoryId: product.product_category_id ?? "",
                 });
-                setImagePreview(post.image ?? "");
+                setImagePreview(product.image ?? "");
             }
         }
-    }, [post, method]);
+    }, [product, method]);
 
     useEffect(() => {
-        getPostCategory();
+        getProductCategory();
     }, []);
 
     return (
-        <dialog id="post_modal" className="modal">
+        <dialog id="product_modal" className="modal">
             <div className="modal-box">
                 <h3 className="text-lg font-bold">
                     {" "}
@@ -107,7 +108,7 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                         : method === "view"
                           ? "View "
                           : "Edit "}{" "}
-                    Post
+                    Product
                 </h3>
                 <hr />
                 <button
@@ -133,7 +134,6 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                             </button>
                         )}
                     </figure>
-                    // <div className="w-full h-[50vh] bg-cover bg-center" style={{backgroundImage: `url(${post.image})`}}/>
                 )}
                 <form onSubmit={handleSubmit} className="mx-auto">
                     {(method === "create" || method === "edit") && (
@@ -154,16 +154,16 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                     )}
                     <fieldset className="fieldset">
                         <legend className="fieldset-legend text-lg">
-                            Title
+                            Name
                         </legend>
                         <input
                             type="text"
-                            name="title"
+                            name="name"
                             disabled={method === "view"}
-                            value={form.title}
+                            value={form.name ?? ""}
                             onChange={handleChanges}
                             className="input input-secondary w-full"
-                            placeholder="Enjoy our all time favorite breads!"
+                            placeholder="Name of the product"
                         />
                     </fieldset>
                     <fieldset className="fieldset">
@@ -174,10 +174,10 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                             type="text"
                             name="descriptions"
                             disabled={method === "view"}
-                            value={form.descriptions}
+                            value={form.descriptions ?? ""}
                             onChange={handleChanges}
                             className="textarea textarea-secondary w-full"
-                            placeholder="Describe your post...."
+                            placeholder="Describe your product...."
                         ></textarea>
                     </fieldset>
                     <fieldset className="fieldset">
@@ -185,16 +185,18 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                             Category
                         </legend>
                         <select
-                            name="postCategoryId"
+                            name="productCategoryId"
                             onChange={handleChanges}
-                            value={form.postCategoryId || ""}
+                            value={form.productCategoryId || ""}
                             disabled={method === "view"}
                             className="input input-secondary w-full"
                             placeholder="Select Category"
                         >
-                            <option value="" disabled> --Select Category--</option>
-                            {postCategories &&
-                                postCategories.map((category) => {
+                            <option value="" disabled>
+                                --Select Category--
+                            </option>
+                            {productCategories &&
+                                productCategories.map((category) => {
                                     return (
                                         <option
                                             key={category.id}
@@ -205,15 +207,6 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                                     );
                                 })}
                         </select>
-                        {/* <input
-                            type="text"
-                            name="title"
-                            disabled={method === 'view'}
-                            value={form.title}
-                            onChange={handleChanges}
-                            className="input input-secondary w-full"
-                            placeholder="Enjoy our all time favorite breads!"
-                        /> */}
                     </fieldset>
                     <hr />
                     {(method === "create" || method === "edit") && (
@@ -237,14 +230,14 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                             className="btn btn-primary"
                             onClick={() => setMethod("edit")}
                         >
-                            Edit Post
+                            Edit Product
                         </button>
                         <button
                             className="btn btn-primary"
                             onClick={() => {
-                                document.getElementById("post_modal").close();
-                                deletePost(post.id);
-                                getPost();
+                                document.getElementById("product_modal").close();
+                                deleteProduct(product.id);
+                                getProduct();
                             }}
                         >
                             Delete

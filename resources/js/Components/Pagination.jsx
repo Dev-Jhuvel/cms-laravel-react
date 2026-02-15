@@ -9,7 +9,7 @@ export default function Pagination({ links, onPageChange }) {
     }
     return (
         <>
-            {links && (
+            {links && links.length > 3 && (
                 <div className="join flex justify-center items-end mt-5">
                     {Object.entries(links).map(([index, link]) => {
                         return (

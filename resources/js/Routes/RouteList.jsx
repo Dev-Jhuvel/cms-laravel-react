@@ -5,7 +5,10 @@ import LoginPage from "../Pages/LoginPage";
 import RegisterPage from "../Pages/RegisterPage";
 import PostPage from "../Pages/PostPage";
 import PostCategoryPage from "../Pages/PostCategoryPage";
+import ProductCategoryPage from "../Pages/ProductCategoryPage";
 import DashboardPage from "../Pages/DashboardPage";
+import ProductPage from "../Pages/ProductPage";
+import MenuPage from "../Pages/MenuPage";
 export default function RouteList() {
     return (
         <Routes>
@@ -34,6 +37,22 @@ export default function RouteList() {
                     </RouteChecker>
                 }
             ></Route>
+            <Route
+                path="/product_categories"
+                element={
+                    <RouteChecker mode="auth">
+                        <ProductCategoryPage />
+                    </RouteChecker>
+                }
+            ></Route>
+            <Route
+                path="/products"
+                element={
+                    <RouteChecker mode="auth">
+                        <ProductPage />
+                    </RouteChecker>
+                }
+            ></Route>
             {/* GUEST */}
             <Route
                 path="/"
@@ -56,6 +75,14 @@ export default function RouteList() {
                 element={
                     <RouteChecker mode="guest">
                         <LoginPage />
+                    </RouteChecker>
+                }
+        ></Route>
+             <Route
+                path="/menu"
+                element={
+                    <RouteChecker mode="guest">
+                        <MenuPage />
                     </RouteChecker>
                 }
             ></Route>

@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ProductCategory extends Model
 {
     use HasUuids;
-    protected $fillable = ['name','active', 'deleted'];
+    protected $fillable = ['name', 'image', 'active', 'deleted'];
 
     public function products(){
-        return $this->hasMany(Products::class);
+        return $this->hasMany(Product::class);
     }
 }

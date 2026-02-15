@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import usePostStore from "../Stores/usePostStore";
-export default function Slider() {
+export default function Slider({posts}) {
     const [index, setIndex] = useState(0);
-    const { posts, homePage } = usePostStore();
+
 
     useEffect(() => {
        if(posts){
@@ -13,9 +12,6 @@ export default function Slider() {
        }
     }, [posts]);
 
-    useEffect(() => {
-        homePage();
-    }, [homePage]);
     return (
         <>
         <h1></h1>

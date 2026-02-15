@@ -1,77 +1,68 @@
 import _ from "lodash";
 import { useCallback, useEffect, useState } from "react";
-import PostModal from "../Modals/PostModal";
-import usePostStore from "../Stores/usePostStore";
+import ProductModal from "../Modals/ProductModal";
+import useProductStore from "../Stores/useProductStore";
 import useThemeStore from "../Stores/useThemeStore";
 import Pagination from "../Components/Pagination";
-import usePostCategoryStore from "../Stores/usePostCategoryStore";
+import useProductCategoryStore from "../Stores/useProductCategoryStore";
 
-export default function PostPage() {
-    const { posts, getPost, links } = usePostStore();
+export default function ProductPage() {
+    const { products, getProduct, links } = useProductStore();
     const { logo } = useThemeStore();
-    const [filterPostCategory, setFilterPostCategory] = useState("");
-    const [selectedPost, setSelectedPost] = useState({});
-    const {postCategories, getPostCategory } = usePostCategoryStore();
+    const [filterProductCategory, setFilterProductCategory] = useState("");
+    const [selectedProduct, setSelectedProduct] = useState({});
+    const {productCategories, getProductCategory } = useProductCategoryStore();
     const [method, setMethod] = useState("");
-    // const [posts, setPost] = useState([]);
-
-    // const debouncedFilter = useCallback(
-    //     _.debounce((value) => {
-    //         getPost(value);
-    //     }, 500),
-    //     [getPost],
-    // );
-
     const truncate = (text = "", length = 20) => {
         if (!text) return;
         return text.length > length ? text.slice(0, length) + "...." : text;
     };
 
     const handleChanges = (e) => {
-        setFilterPostCategory(e.target.value);
+        setFilterProductCategory(e.target.value);
     };
 
     useEffect(() => {
-        getPostCategory();
+        getProductCategory();
     }, []);
 
     useEffect(() => {
-        getPost(null, filterPostCategory);
-    }, [filterPostCategory]);
+        getProduct(null, filterProductCategory);
+    }, [filterProductCategory]);
 
     return (
         <>
             <div className="w-full bg-base-200 ">
                 <div className="px-2 pt-10">
                     <h1 className="text-primary text-center text-3xl font-bold">
-                        Manage Posts
+                        Manage Products
                     </h1>
                     <div className="w-full flex gap-5 items-center">
                         <button
                             className="btn btn-primary ml-5"
                             onClick={() => {
-                                document.getElementById("post_modal").showModal();
+                                document.getElementById("product_modal").showModal();
                                 setMethod("create");
                             }}
                         >
-                            Create New Post
+                            Create New Product
                         </button>
                         <fieldset className="fieldset">
                             {/* <legend className="fieldset-legend text-lg">
                                 Category
                             </legend> */}
                             <select
-                                name="postCategoryId"
+                                name="productCategoryId"
                                 onChange={handleChanges}
                                 // onChange={(e)=>debouncedFilter(e.target.value)}
-                                value={filterPostCategory || ""}
+                                value={filterProductCategory || ""}
                                 // disabled={method === 'view'}
                                 className="input input-secondary w-full"
                                 placeholder="Select Category"
                             >
                                 <option value="">All Categories</option>
-                                {postCategories &&
-                                    postCategories.map((category) => {
+                                {productCategories &&
+                                    productCategories.map((category) => {
                                         return (
                                             <option
                                                 key={category.id}
@@ -85,45 +76,39 @@ export default function PostPage() {
                         </fieldset>
                     </div>
                 </div>
-                <PostModal method={method} post={selectedPost} setMethod={setMethod} />
+                <ProductModal method={method} product={selectedProduct} setMethod={setMethod}/>
                 <div className="w-full py-5 px-10">
-                    {posts ? (
+                    {products ? (
                         <div className="w-full">
                             <div className="flex flex-wrap justify-center gap-2 h-[72vh]">
-                                {posts.map((post) => (
+                                {products.map((product) => (
                                     <div
-                                        key={post.id}
+                                        key={product.id}
                                         className="card bg-base-100 w-80 h-65 shadow-sm group"
                                         onClick={() => {
-                                            document.getElementById("post_modal").showModal();
+                                            document.getElementById("product_modal").showModal();
                                             setMethod("view");
-                                            setSelectedPost(post);
+                                            setSelectedProduct(product);
                                         }}
                                     >
                                         <div
                                             className="m-3 h-full w-[90%] bg-cover bg-center rounded-xl shadow-2xl overflow-y-scroll group-hover:rounded-t-xl group-hover:w-full group-hover:m-0 relative"
                                             style={{
-                                                backgroundImage: `url(${post.image === "" ? logo : post.image})`,
+                                                backgroundImage: `url(${product.image === "" ? logo : product.image})`,
                                             }}
                                         >
                                             <div className="text-primary text-center font-bold bg-primary-content rounded-2xl px-2 py-1 right-2 top-2 absolute">
-                                                {post.post_category.name}
+                                                {product.product_category.name}
                                             </div>
-                                            {/* <img
-                                        src={post.image === '' ? logo : post.image}
-                                        alt="Card image"
-                                        className="rounded-xl shadow-2xl group-hover:rounded-none" /> */}
+                    
                                         </div>
                                         <div className="items-center pb-5 group-hover:pb-3">
                                             <h2 className="text-center font-bold text-sm group-hover:text-base">
-                                                {truncate(post.title)}
+                                                {truncate(product.name)}
                                             </h2>
                                             <p className="text-center text-xs group-hover:hidden">
-                                                {truncate(post.descriptions)}
+                                                {truncate(product.descriptions)}
                                             </p>
-                                            {/* <div className="card-actions">
-                                            <button className="btn btn-primary">Buy Now</button>
-                                        </div> */}
                                         </div>
                                     </div>
                                 ))}
@@ -131,7 +116,7 @@ export default function PostPage() {
                             <Pagination
                                 links={links}
                                 onPageChange={(url) =>
-                                    getPost(url, filterPostCategory)
+                                    getProduct(url, filterProductCategory)
                                 }
                             />
                         </div>

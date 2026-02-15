@@ -1,88 +1,78 @@
 import { create } from "zustand";
 import {
-    ApiStorePost,
-    ApiGetPost,
-    ApiEditPost,
-    ApiDeletePost,
-} from "../Services/postService";
+    ApiStoreProduct,
+    ApiGetProduct,
+    ApiEditProduct,
+    ApiDeleteProduct,
+} from "../Services/productService";
 import useGlobalStore from "./useGlobalStore";
 
-const usePostStore = create((set, get) => ({
-    posts: null,
+const useProductStore = create((set, get) => ({
+    products: null,
     links: null,
     errors: null,
     message: null,
-    storePost: async (form) => {
+    storeProduct: async (form) => {
         set({ errors: null });
         const setMessage = useGlobalStore.getState().setMessage;
         const setLoading = useGlobalStore.getState().setLoading;
         setLoading(true);
         try {
-            await ApiStorePost(form);
-            setMessage({ type: "success", text: "New Post Uploaded!" });
+            await ApiStoreProduct(form);
+            setMessage({ type: "success", text: "New Product Uploaded!" });
         } catch (error) {
-            setMessage({ type: "error", text: "Error in Uploading Post" });
+            setMessage({ type: "error", text: "Error in Uploading Product" });
             if (error.response) set({ errors: error.response.data.errors });
         } finally {
             setLoading(false);
         }
     },
-    getPost: async (url, categoryId) => {
+    getProduct: async (url, categoryId) => {
         if (url) localStorage.setItem("currentPageUrl", url);
         const currentPageUrl = localStorage.getItem("currentPageUrl");
         if (currentPageUrl) url = currentPageUrl;
         const setMessage = useGlobalStore.getState().setMessage;
         try {
-            set({posts: null});
-            const response = await ApiGetPost(url, categoryId);
-            set({ posts: response.data, links: response.links });
+            set({products: null});
+            const response = await ApiGetProduct(url, categoryId);
+            set({ products: response.data, links: response.links });
         } catch (error) {
-            setMessage({ type: "error", text: "Error in Fetching Post" });
+            setMessage({ type: "error", text: "Error in Fetching Product" });
             if (error.response) set({ errors: error.response.data.errors });
         }
     },
 
-    editPost: async (form, postId) => {
+    editProduct: async (form, productId) => {
         set({ errors: null });
         const setMessage = useGlobalStore.getState().setMessage;
         const setLoading = useGlobalStore.getState().setLoading;
         setLoading(true);
         try {
-            await ApiEditPost(form, postId);
-            setMessage({ type: "success", text: "Post Edited" });
+            await ApiEditProduct(form, productId);
+            setMessage({ type: "success", text: "Product Edited" });
         } catch (error) {
-            setMessage({ type: "error", text: "Error in Editing Post" });
+            setMessage({ type: "error", text: "Error in Editing Product" });
             if (error.response) set({ errors: error.response.data.errors });
         } finally {
             setLoading(false);
         }
     },
 
-    deletePost: async (postId) => {
+    deleteProduct: async (productId) => {
         set({ errors: null });
         const setMessage = useGlobalStore.getState().setMessage;
         const setLoading = useGlobalStore.getState().setLoading;
         setLoading(true);
         try {
-            await ApiDeletePost(postId);
-            setMessage({ type: "success", text: "Post Deleted" });
+            await ApiDeleteProduct(productId);
+            setMessage({ type: "success", text: "Product Deleted" });
         } catch (error) {
-            setMessage({ type: "error", text: "Error in Deleting Post" });
+            setMessage({ type: "error", text: "Error in Deleting Product" });
             if (error.response) set({ errors: error.response.data.errors });
         } finally {
             setLoading(false);
-        }
-    },
-
-    homePage: async () => {
-        try {
-            set({posts: null});
-            const response = await ApiHomePage();
-            set({ posts:response });
-        } catch (error) {
-            if (error.response) set({ errors: error.response.data.errors });
         }
     },
 }));
 
-export default usePostStore;
+export default useProductStore;

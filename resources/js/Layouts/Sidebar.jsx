@@ -13,16 +13,9 @@ import {
 } from "lucide-react";
 import {
     Link,
-    Route,
     BrowserRouter as Router,
-    Routes,
     useLocation,
-    useNavigate,
 } from "react-router-dom";
-import { useState } from "react";
-import AuthenticatedRoute from "../Routes/AuthenticatedRoute";
-import Home from "../Pages/Home";
-import Post from "../Pages/Post";
 import useAuthStore from "../Stores/useAuthStore";
 import useThemeStore from "../Stores/useThemeStore";
 import RouteList from "../Routes/RouteList";

@@ -1,23 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import usePostStore from "../Stores/usePostStore";
+import useProductCategoryStore from "../Stores/useProductCategoryStore";
 import useGlobalStore from "../Stores/useGlobalStore";
-import usePostCategoryStore from "../Stores/usePostCategoryStore";
 import { Trash } from "lucide-react";
 
-export default function PostModal({ method, post = null, setMethod = () => {} }) {
-    const defaultForm = {
-        title: "",
-        descriptions: "",
-        postCategoryId: "",
-    };
-
+export default function ProductCategoryModal({ method, productCategory = null, setMethod = () => {} }) {
+    const defaultForm = {name: ""};
     const [file, setFile] = useState("");
     const [form, setForm] = useState(defaultForm);
     const [imagePreview, setImagePreview] = useState("");
-    const { storePost, getPost, editPost, deletePost } = usePostStore();
-    const { getPostCategory, postCategories } = usePostCategoryStore();
+    const { storeProductCategory, getProductCategory, updateProductCategory, deleteProductCategory } = useProductCategoryStore();
     const { setMessage } = useGlobalStore();
-    const fileInputRef = useRef("");
+    const fileInputRef = useRef(null);
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -41,23 +34,18 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(form.postCategoryId === ''){
-           return setMessage({type: 'error', text: 'Select Post Category!'});
-        }
-
-        document.getElementById("post_modal").close();
+        document.getElementById("product_category_modal").close();
 
         const formData = new FormData();
-        formData.append("title", form.title);
-        formData.append("descriptions", form.descriptions);
-        formData.append("post_category_id", form.postCategoryId);
+        formData.append("name", form.name);
         if (file) formData.append("image", file);
+
         if (method === "create") {
-            await storePost(formData);
+            await storeProductCategory(formData);
         } else {
-            await editPost(formData, post.id);
+            await updateProductCategory(formData, productCategory.id);
         }
-        getPost();
+        await getProductCategory();
         removeImage();
         setForm(defaultForm);
     };
@@ -71,43 +59,32 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
     };
 
     const closeModal = () => {
-        document.getElementById("post_modal").close();
+        document.getElementById("product_category_modal").close();
         setForm(defaultForm);
         removeImage();
     };
 
     useEffect(() => {
-        if (method == "create") {
+        if (method === "create") {
             setForm(defaultForm);
             setFile("");
             setImagePreview("");
         } else {
-            if(post){
-                setForm({
-                    title: post.title ?? "",
-                    descriptions: post.descriptions ?? "",
-                    postCategoryId: post.post_category_id ?? "",
-                });
-                setImagePreview(post.image ?? "");
+            if(productCategory){
+                setForm({name: productCategory.name});
+                setImagePreview(productCategory.image ?? "");
             }
         }
-    }, [post, method]);
+    }, [method, productCategory]);
 
-    useEffect(() => {
-        getPostCategory();
-    }, []);
 
     return (
-        <dialog id="post_modal" className="modal">
+        <dialog id="product_category_modal" className="modal">
             <div className="modal-box">
                 <h3 className="text-lg font-bold">
-                    {" "}
-                    {method === "create"
-                        ? " Create a new "
-                        : method === "view"
-                          ? "View "
-                          : "Edit "}{" "}
-                    Post
+                    
+                    {method === "create" ? " Create a new " : method === "view" ? "View " : "Edit "}
+                    Product Category
                 </h3>
                 <hr />
                 <button
@@ -128,12 +105,10 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                                 className="btn btn-error btn-sm py-5 absolute bottom-2 right-2"
                                 onClick={() => removeImage()}
                             >
-                                {" "}
-                                <Trash />{" "}
+                                <Trash />
                             </button>
                         )}
                     </figure>
-                    // <div className="w-full h-[50vh] bg-cover bg-center" style={{backgroundImage: `url(${post.image})`}}/>
                 )}
                 <form onSubmit={handleSubmit} className="mx-auto">
                     {(method === "create" || method === "edit") && (
@@ -154,66 +129,17 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                     )}
                     <fieldset className="fieldset">
                         <legend className="fieldset-legend text-lg">
-                            Title
+                            Name
                         </legend>
                         <input
                             type="text"
-                            name="title"
+                            name="name"
                             disabled={method === "view"}
-                            value={form.title}
+                            value={form.name ?? ""}
                             onChange={handleChanges}
                             className="input input-secondary w-full"
-                            placeholder="Enjoy our all time favorite breads!"
+                            placeholder="Product Category"
                         />
-                    </fieldset>
-                    <fieldset className="fieldset">
-                        <legend className="fieldset-legend text-lg">
-                            Description
-                        </legend>
-                        <textarea
-                            type="text"
-                            name="descriptions"
-                            disabled={method === "view"}
-                            value={form.descriptions}
-                            onChange={handleChanges}
-                            className="textarea textarea-secondary w-full"
-                            placeholder="Describe your post...."
-                        ></textarea>
-                    </fieldset>
-                    <fieldset className="fieldset">
-                        <legend className="fieldset-legend text-lg">
-                            Category
-                        </legend>
-                        <select
-                            name="postCategoryId"
-                            onChange={handleChanges}
-                            value={form.postCategoryId || ""}
-                            disabled={method === "view"}
-                            className="input input-secondary w-full"
-                            placeholder="Select Category"
-                        >
-                            <option value="" disabled> --Select Category--</option>
-                            {postCategories &&
-                                postCategories.map((category) => {
-                                    return (
-                                        <option
-                                            key={category.id}
-                                            value={category.id}
-                                        >
-                                            {category.name}
-                                        </option>
-                                    );
-                                })}
-                        </select>
-                        {/* <input
-                            type="text"
-                            name="title"
-                            disabled={method === 'view'}
-                            value={form.title}
-                            onChange={handleChanges}
-                            className="input input-secondary w-full"
-                            placeholder="Enjoy our all time favorite breads!"
-                        /> */}
                     </fieldset>
                     <hr />
                     {(method === "create" || method === "edit") && (
@@ -237,14 +163,15 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                             className="btn btn-primary"
                             onClick={() => setMethod("edit")}
                         >
-                            Edit Post
+                            Edit Category
                         </button>
                         <button
                             className="btn btn-primary"
+                            disabled={productCategory.products_count > 0}
                             onClick={() => {
-                                document.getElementById("post_modal").close();
-                                deletePost(post.id);
-                                getPost();
+                                document.getElementById("product_category_modal").close();
+                                deleteProductCategory(productCategory.id);
+                                getProductCategory();
                             }}
                         >
                             Delete

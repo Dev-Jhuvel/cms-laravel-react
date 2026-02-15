@@ -8,10 +8,9 @@ export async function ApiStorePost(form) {
 
 export async function ApiGetPost(url, categoryId) {
     let final_url;
-    console.log(url, categoryId);
     if (url) final_url = url;
     else final_url = '/posts';
-    const params = {categoryId};
+    const params = {post_category_id: categoryId};
     const response = await API.post(final_url, params, headers);
     return response.data;
 }
@@ -31,7 +30,3 @@ export async function ApiDeletePost(postId) {
     return response.data;
 }
 
-export async function ApiHomePage() {
-    const response = await API.get('/');
-    return response.data;
-}
