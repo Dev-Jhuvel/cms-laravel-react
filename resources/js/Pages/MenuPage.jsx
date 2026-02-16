@@ -10,20 +10,24 @@ const MenuPage = () =>{
     }, []);
 
     return (
-        <section className="w-full bg-base-100">
+        <section className="w-full bg-base-100 pt-15 pb-10">
+            {/* TODO: Add React Easy Crop */}
             {productCategory && (
                 <div>
                    {Object.entries(productCategory).map(([category, products]) =>(
                         <div key={category} className="w-full">
-                            <h1 className="text-5xl font-bold py-10 pl-20">{category}</h1>
-                            <div className="w-full flex gap-10   justify-center">
+                            <h1 className="text-3xl font-bold py-5 pl-20">{category}</h1>
+                            <div className="w-full flex gap-10 justify-center flex-wrap">
                                 {products.map((product) =>(
                                     <div 
                                         key={product.id} 
-                                        className="card bg-base-100 w-60 h-82 shadow-sm bg-center bg-cover" 
-                                        style={{backgroundImage: `url(${product.image === "" ? logo : product.image})`}}>
-                                        <p className="font-bold text-2xl text-center">{product.name}</p>
+                                        className="relative card bg-base-100 w-60 h-62 shadow-sm overflow-hidden group">
+                                        <div 
+                                            className="absolute inset-0 bg-center bg-cover transition-opacity duration-300 group-hover:opacity-50"
+                                            style={{backgroundImage: `url(${product.image === "" ? logo : product.image})`}}></div>
+                                        <p className="relative font-bold text-2xl text-center z-10 hidden group-hover:block">{product.name}</p>
                                     </div>
+
                                 ))}
                             </div>
                         </div>

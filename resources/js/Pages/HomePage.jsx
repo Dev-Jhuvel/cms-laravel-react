@@ -3,7 +3,6 @@ import Slider from '../Components/Slider';
 import useHomeStore from "../Stores/useHomeStore";
 import ProductCatSection from '../Components/ProductCatSection';
 
-
 export default function Home() {
     const {posts, productCategories, getData} = useHomeStore();
     useEffect(() => {

@@ -44,17 +44,26 @@ class ProductCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, UploadService $uploadService)
     {
-        $validated = $request->validate(['name' => 'required']);
 
-        $product_categories = ProductCategory::find($request->id);
+        $url_data = $uploadService->upload($request);
+        if(isset($url_data['error'])){
+            // return response()->json($url_data, 400);
+        }
+
+        // $validated = $request->validate(['name' => 'required']);
+
+        $product_categories = ProductCategory::find($request->product_category_id);
 
         if(!$product_categories){
             return response()->json(['message' => 'Product Category not Found.'], 404);
         }
         
-        $product_categories->update($validated);
+        $product_categories->update([
+            'name' => $request->name,
+            'image' => $url_data['url'],
+        ]);
 
         return response()->json($product_categories, 200);
     }

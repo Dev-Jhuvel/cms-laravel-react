@@ -8,10 +8,10 @@ export default function Guest() {
     const location = useLocation();
     return (
         <>
-            {location.pathname == "/" && (
-                <div className="navbar bg-base-100 shadow-sm fixed z-50">
+            {(location.pathname == "/" || location.pathname == "/menu") && (
+                <div className="navbar bg-base-300 shadow-sm fixed z-50">
                     <div className="flex-1">
-                        <a className="btn btn-ghost font-bold text-2xl">Au Bon</a>
+                        <Link to="/" className="btn btn-ghost font-bold text-2xl">Au Bon</Link>
                     </div>
                     <div className="flex-none">
                         <ul className="menu menu-horizontal px-1">

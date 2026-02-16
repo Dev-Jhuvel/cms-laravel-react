@@ -39,6 +39,8 @@ class HomepageController extends Controller
             ->get()
             ->groupBy(function($product){
                 return $product->productCategory->name;
+            })->sortBy(function($item, $key){
+                return $key;
             });
 
         return response()->json([

@@ -10,7 +10,7 @@ const ProductCatSection = ({productCategories}) =>{
                             {productCategories.map((category)=>(
                                 <Link to="/menu" key={category.id} className="w-full h-90 flex gap-5">
                                     <div className="w-[80%] h-[90%] shadow-md rounded-2xl bg-center bg-cover m-auto hover:shadow-primary flex items-center justify-center" style={{backgroundImage: `url(${category.image === "" ? logo : category.image})`}}>
-                                        <p className="text-white text-shadow-lg text-shadow-primary-content font-bold text-7xl">{category.name}</p>
+                                        <p className="text-white text-shadow-lg text-shadow-primary font-bold text-4xl">{category.name}</p>
                                     </div>
                                 </Link>
                             ))}
