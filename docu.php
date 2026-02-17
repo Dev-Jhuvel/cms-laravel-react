@@ -11,6 +11,7 @@
 // npm install daisyui
 // npm install lucide-react
 // npm install lodash
+// npm install react-easy-crop
 
 
 # restart 404 problem

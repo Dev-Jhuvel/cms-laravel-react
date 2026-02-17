@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import useProductStore from "../Stores/useProductStore";
 import useGlobalStore from "../Stores/useGlobalStore";
 import useProductCategoryStore from "../Stores/useProductCategoryStore";
-import { Trash } from "lucide-react";
+import { CropIcon, Trash } from "lucide-react";
+import ImageCropper from "../Components/ImageCropper";
 
 export default function ProductModal({ method, product = null, setMethod = () => {} }) {
     const defaultForm = {
@@ -13,7 +14,9 @@ export default function ProductModal({ method, product = null, setMethod = () =>
 
     const [file, setFile] = useState("");
     const [form, setForm] = useState(defaultForm);
-    const [imagePreview, setImagePreview] = useState("");
+    const [imagePreview, setImagePreview] = useState(null);
+    const [croppedImage, setCroppedImage] = useState(null);
+    const [isCropping, setIsCropping] = useState(false);
     const { storeProduct, getProduct, editProduct, deleteProduct } = useProductStore();
     const { getProductCategory, productCategories } = useProductCategoryStore();
     const { setMessage } = useGlobalStore();
@@ -31,6 +34,7 @@ export default function ProductModal({ method, product = null, setMethod = () =>
         const reader = new FileReader();
         reader.onloadend = () => {
             setImagePreview(reader.result);
+            setCroppedImage(null)
         };
         reader.readAsDataURL(selectedFile);
     };
@@ -51,7 +55,11 @@ export default function ProductModal({ method, product = null, setMethod = () =>
         formData.append("name", form.name);
         formData.append("descriptions", form.descriptions);
         formData.append("product_category_id", form.productCategoryId);
-        if (file) formData.append("image", file);
+        if(croppedImage){
+            formData.append("image", croppedImage.blob, "cropped.jpeg");
+        } else if(file){
+            formData.append("image", file);
+        }
 
         if (method === "create") {
             await storeProduct(formData);
@@ -117,7 +125,7 @@ export default function ProductModal({ method, product = null, setMethod = () =>
                 >
                     ✕
                 </button>
-                {imagePreview && (
+                {(!isCropping && imagePreview) && (
                     <figure className="flex justify-center items-center relative mt-2">
                         <img
                             className="rounded-2xl shadow-2xl"
@@ -125,15 +133,32 @@ export default function ProductModal({ method, product = null, setMethod = () =>
                             alt=""
                         />
                         {(method === "create" || method === "edit") && (
-                            <button
-                                className="btn btn-error btn-sm py-5 absolute bottom-2 right-2"
-                                onClick={() => removeImage()}
-                            >
-                                {" "}
-                                <Trash />{" "}
-                            </button>
+                            <>
+                                <button
+                                    className="btn btn-error btn-sm py-5 absolute bottom-2 right-2"
+                                    onClick={() => removeImage()}
+                                >
+                                    <Trash />
+                                </button>
+                                <button
+                                    className="btn btn-success btn-sm py-5 absolute bottom-2 right-20"
+                                    onClick={() => setIsCropping(true)}
+                                >
+                                    <CropIcon />
+                                </button>
+                            </>
                         )}
                     </figure>
+                )}
+                {(isCropping && imagePreview) && (
+                    <ImageCropper 
+                        image={imagePreview} 
+                        aspect={1} 
+                        croppedImage={(result)=>{
+                            setCroppedImage(result);
+                            setImagePreview(result.fileUrl);
+                        }} 
+                        isCropping={(value) => setIsCropping(value)} />
                 )}
                 <form onSubmit={handleSubmit} className="mx-auto">
                     {(method === "create" || method === "edit") && (

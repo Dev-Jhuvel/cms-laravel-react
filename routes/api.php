@@ -60,3 +60,4 @@ Route::prefix('product_categories')->middleware('auth:sanctum')->group(function 
 });
 
 Route::get('/', [HomepageController::class, 'index']);
+Route::post('/menu', [HomepageController::class, 'menu']);

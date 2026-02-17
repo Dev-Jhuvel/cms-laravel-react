@@ -60,6 +60,7 @@ const useAuthStore = create(
                 const user = await ApiGetUser(token);
                 set({ user, token, isAuthenticated: true });
             } catch (error) {
+                localStorage.clear();
                 set({ user: null, token: null, isAuthenticated: false });
             } finally {
                 setLoading(false);
@@ -71,7 +72,7 @@ const useAuthStore = create(
             const token = localStorage.getItem("token");
             if (token) {
                 ApiLogout(token);
-                localStorage.removeItem("token");
+                localStorage.clear();
                 setMessage({ type: "success", text: "Logout Successfully!" });
                 set({ user: null, token: null, isAuthenticated: false });
             }
