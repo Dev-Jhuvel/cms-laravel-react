@@ -26,5 +26,7 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 # Permissions for Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-EXPOSE 80
-CMD ["apache2-foreground"]
+RUN php artisan migrate --force
+
+EXPOSE 80 
+CMD php artisan migrate --force && apache2-foreground
