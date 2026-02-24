@@ -20,6 +20,7 @@ const usePostStore = create((set, get) => ({
         try {
             await ApiStorePost(form);
             setMessage({ type: "success", text: "New Post Uploaded!" });
+            
         } catch (error) {
             setMessage({ type: "error", text: "Error in Uploading Post" });
             if (error.response) set({ errors: error.response.data.errors });
@@ -29,6 +30,8 @@ const usePostStore = create((set, get) => ({
     },
     getPost: async (url, categoryId) => {
         if (url) localStorage.setItem("currentPageUrl", url);
+        else  localStorage.removeItem("currentPageUrl");
+
         const currentPageUrl = localStorage.getItem("currentPageUrl");
         if (currentPageUrl) url = currentPageUrl;
         const setMessage = useGlobalStore.getState().setMessage;
@@ -50,6 +53,7 @@ const usePostStore = create((set, get) => ({
         try {
             await ApiEditPost(form, postId);
             setMessage({ type: "success", text: "Post Edited" });
+            get().getPost();
         } catch (error) {
             setMessage({ type: "error", text: "Error in Editing Post" });
             if (error.response) set({ errors: error.response.data.errors });
@@ -66,6 +70,7 @@ const usePostStore = create((set, get) => ({
         try {
             await ApiDeletePost(postId);
             setMessage({ type: "success", text: "Post Deleted" });
+            get().getPost();
         } catch (error) {
             setMessage({ type: "error", text: "Error in Deleting Post" });
             if (error.response) set({ errors: error.response.data.errors });

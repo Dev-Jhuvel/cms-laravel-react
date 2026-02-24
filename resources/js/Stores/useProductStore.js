@@ -29,6 +29,8 @@ const useProductStore = create((set, get) => ({
     },
     getProduct: async (url, categoryId) => {
         if (url) localStorage.setItem("currentPageUrl", url);
+        else  localStorage.removeItem("currentPageUrl");
+        
         const currentPageUrl = localStorage.getItem("currentPageUrl");
         if (currentPageUrl) url = currentPageUrl;
         const setMessage = useGlobalStore.getState().setMessage;

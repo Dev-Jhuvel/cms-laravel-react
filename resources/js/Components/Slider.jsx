@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 export default function Slider({posts}) {
     const [index, setIndex] = useState(0);
 
-
     useEffect(() => {
        if(posts){
         const timer = setInterval(() => {

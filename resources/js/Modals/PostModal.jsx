@@ -18,6 +18,7 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
     const { getPostCategory, postCategories } = usePostCategoryStore();
     const { setMessage } = useGlobalStore();
     const fileInputRef = useRef("");
+    const modalLabel = method === "create" ? " Create a new " : method === "view" ? "View " : "Edit ";
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -57,7 +58,6 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
         } else {
             await editPost(formData, post.id);
         }
-        getPost();
         removeImage();
         setForm(defaultForm);
     };
@@ -75,6 +75,11 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
         setForm(defaultForm);
         removeImage();
     };
+
+    const handleDelete = (id) =>{
+        document.getElementById("post_modal").close();
+        deletePost(id);
+    }
 
     useEffect(() => {
         if (method == "create") {
@@ -100,15 +105,7 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
     return (
         <dialog id="post_modal" className="modal">
             <div className="modal-box">
-                <h3 className="text-lg font-bold">
-                    {" "}
-                    {method === "create"
-                        ? " Create a new "
-                        : method === "view"
-                          ? "View "
-                          : "Edit "}{" "}
-                    Post
-                </h3>
+                <h3 className="text-lg font-bold">{modalLabel} Post</h3>
                 <hr />
                 <button
                     className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -128,8 +125,7 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                                 className="btn btn-error btn-sm py-5 absolute bottom-2 right-2"
                                 onClick={() => removeImage()}
                             >
-                                {" "}
-                                <Trash />{" "}
+                                <Trash />
                             </button>
                         )}
                     </figure>
@@ -241,11 +237,7 @@ export default function PostModal({ method, post = null, setMethod = () => {} })
                         </button>
                         <button
                             className="btn btn-primary"
-                            onClick={() => {
-                                document.getElementById("post_modal").close();
-                                deletePost(post.id);
-                                getPost();
-                            }}
+                            onClick={() => handleDelete(post.id)}
                         >
                             Delete
                         </button>

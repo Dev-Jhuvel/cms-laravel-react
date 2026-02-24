@@ -15,7 +15,7 @@ const ProductCategoryPage = () => {
         <section className="w-full bg-base-200 h-ful">
             <div className="px-2 pt-10">
                 <h1 className="text-primary text-center text-3xl font-bold">
-                    Manage Post Categories
+                    Manage Product Categories
                 </h1>
                 <button
                     className="btn btn-primary ml-5"

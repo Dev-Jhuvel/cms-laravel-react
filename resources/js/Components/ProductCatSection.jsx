@@ -13,8 +13,9 @@ const ProductCatSection = ({productCategories}) =>{
                         <div className="flex flex-col justify-center md:grid md:grid-cols-4 md:gap-x-5 gap-y-5 p-2 ">
                             {productCategories.map((category, index)=>{
                                 const newIndex = index + 1;
+                                const colSpanClass = newIndex % 3 === 0 ? "col-span-2" : newIndex % 2 === 0 ? "col-span-2" : "col-span-1";
                                 return (
-                                <Link to="/menu" key={category.id} className={`w-full h-40 md:h-55 md:col-span-${newIndex % 3 == 0 ? 2 : newIndex % 2 == 0 ? 2 : 1}`} onClick={()=>setProductCategory(category.id)}>
+                                <Link to="/menu" key={category.id} className={`w-full h-40 md:h-45 ${colSpanClass}`} onClick={()=>setProductCategory(category.id)}>
                                     <div className="w-full h-full shadow-md rounded-2xl bg-center bg-cover m-auto hover:shadow-primary flex items-center justify-center" style={{backgroundImage: `url(${category.image === "" ? logo : category.image})`}}>
                                         <p className="text-white text-shadow-lg text-shadow-primary font-bold text-4xl">{category.name}</p>
                                     </div>

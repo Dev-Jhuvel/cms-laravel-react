@@ -13,14 +13,6 @@ export default function PostPage() {
     const [selectedPost, setSelectedPost] = useState({});
     const {postCategories, getPostCategory } = usePostCategoryStore();
     const [method, setMethod] = useState("");
-    // const [posts, setPost] = useState([]);
-
-    // const debouncedFilter = useCallback(
-    //     _.debounce((value) => {
-    //         getPost(value);
-    //     }, 500),
-    //     [getPost],
-    // );
 
     const truncate = (text = "", length = 20) => {
         if (!text) return;
@@ -102,9 +94,7 @@ export default function PostPage() {
                                     >
                                         <div
                                             className="m-3 h-full w-[90%] bg-cover bg-center rounded-xl shadow-2xl overflow-y-scroll group-hover:rounded-t-xl group-hover:w-full group-hover:m-0 relative"
-                                            style={{
-                                                backgroundImage: `url(${post.image === "" ? logo : post.image})`,
-                                            }}
+                                            style={{ backgroundImage: `url(${post.image === "" ? logo : post.image})`}}
                                         >
                                             <div className="text-primary text-center font-bold bg-primary-content rounded-2xl px-2 py-1 right-2 top-2 absolute">
                                                 {post.post_category.name}
